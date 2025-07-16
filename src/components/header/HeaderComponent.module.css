@@ -3,3 +3,20 @@
     justify-content: space-between;
     padding: 14px 0;
 }
+
+.button {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    border-radius: 999px;
+    line-height: 20px;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.icon {
+    padding: 0 10px;
+}

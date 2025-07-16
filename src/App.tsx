@@ -1,15 +1,19 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import HomeComponent from './components/HomeComponent';
-import LoginComponent from './components/LoginComponent';
-import AdminComponent from './components/AdminComponent';
+import HomeComponent from './pages/HomeComponent';
+import LoginComponent from './pages/LoginComponent';
+import AdminComponent from './pages/AdminComponent';
+import MainComponent from './pages/MainComponent';
+import JobComponent from './pages/JobComponent';
 
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomeComponent />}></Route>
-      <Route path="/login" element={<LoginComponent />}></Route>
-      <Route path="/admin" element={<AdminComponent />}></Route>
+      <Route path="/login" element={<LoginComponent />} />
+      <Route path="/" element={<HomeComponent />}>
+        <Route index element={<MainComponent />} />
+        <Route path="jobs" element={<JobComponent />} />
+      </Route>
     </Routes>
   );
 }
