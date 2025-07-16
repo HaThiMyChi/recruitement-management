@@ -1,6 +1,12 @@
+import HeaderComponent from "./header/HeaderComponent";
+import NavbarComponent from "./navbar/NavbarComponent";
+
 const HomeComponent: React.FC = () => {
     return (
-        <h1>Home page</h1>
+        <>
+            <HeaderComponent />
+            <NavbarComponent />
+        </>
     )
 }
 
