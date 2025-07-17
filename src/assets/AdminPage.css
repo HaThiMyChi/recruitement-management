@@ -1,0 +1,66 @@
+.sidebar {
+    background-color: rgb(41.5, 48, 61);
+    height: 737px;
+    width: 300px;
+    float: left;
+}
+
+.sidebar-header .navbar-logo img {
+    width: 300px;
+    height: 85px;
+    border-right: 2px solid #323a49;
+    border-bottom: 2px solid #323a49;
+}
+
+.sidebar .tabbar {
+    height: 650px;
+}
+
+.sidebar .tabbar .componentBox {
+    border-bottom: 1px solid #323a49;
+    height: 51px;
+    line-height: 50px;
+}
+
+.siderbar .tabbar .componentBox button {
+    text-decoration: none;
+    font-size: 18px;
+    color: wheat;
+    padding: 0px 10px;
+    display: block;
+    border: none;
+    width: 100%;
+    background-color: rgb(41.5, 48, 61);
+    text-align: left;
+    height: 50px;
+}
+
+.componentBox button:hover{
+    background: #323a49;
+}
+
+.user_info {
+    height: 85px;
+    border: 1px solid #323a49;
+    background-color: rgb(41.5, 48, 61);
+}
+
+.user_info .top-menu {
+    float: left;
+    line-height: 85px;
+    font-size: 18px;
+    padding-left: 15px;
+}
+
+.user_info .top-menu a{
+    padding: 0 15px;
+    text-decoration: none;
+    color: wheat;
+    width: 120px;
+    text-align: left;
+}
+
+.user_info .top-menu a:hover{
+    color: gray;
+}
+
