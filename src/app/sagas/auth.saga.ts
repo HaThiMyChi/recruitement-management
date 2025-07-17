@@ -32,7 +32,7 @@ export function* handleLogin(action: PayloadAction<LoginRequest>): Generator<Cal
         }
         yield put(loginSuccess(data));
     } catch(e) {
-        yield put(loginError('Login have been Error!!!'));
+        yield put(loginError(e));
     } finally {
         yield put(loginComplete());
     }
