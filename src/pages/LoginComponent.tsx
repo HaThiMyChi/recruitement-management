@@ -24,7 +24,7 @@ const LoginComponent: React.FC = () => {
     useEffect(() => {
         if (token && user) {
             toast.success('Login have ben successfully!!!');
-            if (user.role === UserRole.ADMIN) navigate('/');
+            if (user.role === UserRole.ADMIN) navigate('/admin');
             else navigate('/')
         }
     }, [token, user, navigate]) 
