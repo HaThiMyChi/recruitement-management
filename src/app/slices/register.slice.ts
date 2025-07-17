@@ -35,10 +35,16 @@ export const registerSlice = createSlice({
         },
         registerComplete(state) {
             state.loading = false;
+        },
+        resetRegisterState(state) {
+            state.data = null;
+            state.error = null;
+            state.status = undefined;
+            state.loading = false;
         }
     }
 })
 
-export const {register, registerSuccess, registerError, registerComplete} = registerSlice.actions;
+export const {register, registerSuccess, registerError, registerComplete, resetRegisterState} = registerSlice.actions;
 
 export const registerReducer = registerSlice.reducer;

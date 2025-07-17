@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../app/store";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { UserRole } from "../enums/UserRole";
-import { register } from "../app/slices/register.slice";
+import { register, resetRegisterState } from "../app/slices/register.slice";
 import { toast } from "react-toastify";
 
 const SignUpComponent: React.FC = () => {
@@ -19,7 +19,6 @@ const SignUpComponent: React.FC = () => {
     const response = useSelector((state: RootState) => state.register)
     const handleSignUp = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Sign up with user(', email, ', ', password, ', ', phone, ', ', fullName, ', ', role, ')')
         dispatch(register({email, password, phone, fullName, role}));
     }
 
@@ -27,8 +26,9 @@ const SignUpComponent: React.FC = () => {
         if (response.status === 201) {
             toast.success('The user have been sign up successful!');
             navigate('/login');
+            dispatch(resetRegisterState());
         }
-    }, [response.status, response.error]);
+    }, [response.status, navigate]);
 
     return (
         <Container className="d-flex justify-content-center align-items-center" style={{minHeight: '100vh'}}>

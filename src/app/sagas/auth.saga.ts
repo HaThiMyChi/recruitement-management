@@ -14,23 +14,14 @@ export default async function loginFunction(emailOrPhone: string, password:strin
 export function* handleLogin(action: PayloadAction<LoginRequest>): Generator<CallEffect<LoginPayload> | PutEffect<any>, void, LoginPayload> {
     try {
         const {emailOrPhone, password} = action.payload;
-        const data: LoginPayload = {
-            token: '',
-            user: {
-                email: '',
-                role: '',
-                exp: 0,
-                iat: 0,
-                sub: 0
-            }
-        }
+        
         const response: LoginPayload = yield call(loginFunction, emailOrPhone, password);
-        data.token = response?.token;
-        const user = decodeToken(data.token);
+        
+        const user = decodeToken(response.token);
         if (user !== null) {
-            data.user =  user;
+            response.user =  user;
         }
-        yield put(loginSuccess(data));
+        yield put(loginSuccess(response));
     } catch(e) {
         yield put(loginError(e));
     } finally {
