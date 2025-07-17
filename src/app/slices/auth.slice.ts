@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LoginPayload, LoginRequest } from "../auth.type";
+import { LoginPayload, LoginRequest } from "../types/auth.type";
 export const loginSlice = createSlice({
     name: 'login',
     initialState: {

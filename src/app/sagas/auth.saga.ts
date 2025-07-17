@@ -1,6 +1,6 @@
 import {call, CallEffect, put, PutEffect, takeLatest} from 'redux-saga/effects';
 import {login, loginSuccess, loginError, loginComplete} from '../slices/auth.slice';
-import {LoginRequest, LoginPayload} from '../auth.type';
+import {LoginRequest, LoginPayload} from '../types/auth.type';
 import { UserEnpoint } from '../../enums/UserEnpoint';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { decodeToken } from '../../utils/jwtHelper';

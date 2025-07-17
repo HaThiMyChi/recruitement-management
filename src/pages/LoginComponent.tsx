@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../app/store";
 import { useEffect, useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
@@ -24,7 +24,7 @@ const LoginComponent: React.FC = () => {
     useEffect(() => {
         if (token && user) {
             toast.success('Login have ben successfully!!!');
-            if (user.role === UserRole.ADMIN) navigate('/admin');
+            if (user.role === UserRole.ADMIN) navigate('/');
             else navigate('/')
         }
     }, [token, user, navigate]) 
@@ -40,17 +40,17 @@ const LoginComponent: React.FC = () => {
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                                 type="emal"
-                                placeholder="Nhập email"
+                                placeholder="Enter mail"
                                 value={emailOrPhone}
                                 onChange={(e) => setEmailOrPhone(e.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formPassword" className="mb-3">
-                            <Form.Label>Mật khẩu</Form.Label>
+                            <Form.Label>Password</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Nhập mật khẩu"
+                                placeholder="Enter password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} 
                             />
@@ -60,6 +60,10 @@ const LoginComponent: React.FC = () => {
                             <Button variant="primary" type="submit">Submit</Button>
                         </div>
                     </Form>
+                    <div style={{display: 'flex', justifyContent: 'center', padding: '16px 0'}}>
+                        Don't have an account? 
+                        <Link style={{color: 'rgba(254, 44, 85, 1)', marginLeft: '5px', fontWeight: '600'}} to={'/register'}>Sign up</Link>
+                    </div>
                 </Card.Body>
             </Card>
         </Container>

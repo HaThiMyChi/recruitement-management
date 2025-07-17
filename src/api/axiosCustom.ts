@@ -23,8 +23,8 @@ axiosCustom.interceptors.request.use(
 axiosCustom.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.data?.error) {
-            const messageError = error.response.data.error;
+        if (error.response?.data?.message) {
+            const messageError = error.response.data.message;
             toast.error(messageError);
         }
         return Promise.reject(error);

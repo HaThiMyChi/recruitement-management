@@ -1,3 +1,4 @@
 export enum UserEnpoint {
-    LOGIN = 'login'
+    LOGIN = 'login',
+    REGISTER = 'register',
 }
