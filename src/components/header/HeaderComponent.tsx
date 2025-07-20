@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 const HeaderComponent: React.FC = () => {
-    const user = useSelector((state: RootState) => state.login.user);
-    const token = useSelector((state: RootState) => state.login.token);
-
+    // const user = useSelector((state: RootState) => state.login.user);
+    // const token = useSelector((state: RootState) => state.login.token);
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;  // ! báo cho TypeScript: “Cái này chắc chắn không null đâu, cứ parse đi.”
     return (
         <Container>
             <Row>
@@ -20,7 +21,7 @@ const HeaderComponent: React.FC = () => {
 
                     <div>
                         {
-                            token ? (
+                            token && user ? (
                                 <Button variant="danger" className={styles.button}>
                                     <NavDropdown title={
                                         <>

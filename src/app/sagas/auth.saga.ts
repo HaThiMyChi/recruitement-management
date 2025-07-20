@@ -21,6 +21,8 @@ export function* handleLogin(action: PayloadAction<LoginRequest>): Generator<Cal
         if (user !== null) {
             response.user =  user;
         }
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
         yield put(loginSuccess(response));
     } catch(e) {
         yield put(loginError(e));
