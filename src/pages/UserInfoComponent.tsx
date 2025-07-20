@@ -1,16 +1,71 @@
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { useEffect } from "react";
-import { getCurrentUser } from "../app/slices/user.slice";
+import { FormEvent, useEffect, useState } from "react";
+import { getCurrentUser, resetUpdateUserState, updateUser } from "../app/slices/user.slice";
+import { UserInfo, UserRequestUpdate } from "../app/types/user.type";
+import { toast } from "react-toastify";
+
 
 const UserInfoComponent: React.FunctionComponent = () => {
+    const [show, setShow] = useState(false);
     const dispatch = useDispatch();
-    const user = useSelector((state: RootState) => state.user.data)
+    const response = useSelector((state: RootState) => state.user);
+    const user = response.data;
+    const status = response.status;
+    const [userUpdate, setUserUpdate] = useState<UserInfo | null>(user);
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
+
+    const handleChangeUser = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e?.target
+         console.log('name:', name, '| value:', value);
+        setUserUpdate((prev) => {
+            if (!prev) return prev
+            return {
+                ...prev,
+                [name]: value
+            }
+        })
+    };
+
+    const handleUpdateUser = (e: FormEvent) => {
+        e.preventDefault()
+        if (!userUpdate) {
+            console.log('return')
+            return;
+        }
+
+        const userReq: UserRequestUpdate = {
+            id: userUpdate.id,
+            email: userUpdate.email,
+            fullName: userUpdate.fullName,
+            phone: userUpdate.phone,
+            address: userUpdate.address,
+            companyName: userUpdate.companyName,
+            companyAddress: userUpdate.companyAddress,
+            companySize: userUpdate.companySize,
+            companyWebsite: userUpdate.companyWebsite
+        }
+
+        dispatch(updateUser(userReq));
+        setShow(false);
+    }
 
     useEffect(() => {
         dispatch(getCurrentUser())
     }, [dispatch])
+
+    useEffect(() => {
+        setUserUpdate(user)
+    }, [user])
+
+    useEffect(() => {
+        if (status === 200) {
+            toast.success('Update User Success!!!');
+            dispatch(resetUpdateUserState(userUpdate));
+        }
+    })
 
     return (
         <>
@@ -27,16 +82,20 @@ const UserInfoComponent: React.FunctionComponent = () => {
                                 <Col>
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control 
+                                        name="email"
                                         type="email" 
                                         placeholder="Enter email" 
-                                        value={user?.email} />
+                                        value={userUpdate?.email}
+                                        onChange={handleChangeUser}/>
                                 </Col>
                                 <Col>
                                     <Form.Label>Phone</Form.Label>
                                     <Form.Control
+                                        name="phone"
                                         type="text"
                                         placeholder="Enter Phone"
-                                        value={user?.phone}
+                                        value={userUpdate?.phone}
+                                        onChange={handleChangeUser}
                                     />
                                 </Col>
                             </Form.Group>
@@ -45,17 +104,21 @@ const UserInfoComponent: React.FunctionComponent = () => {
                                 <Col>
                                     <Form.Label>Full Name</Form.Label>
                                     <Form.Control
+                                        name="fullName"
                                         type="text"
                                         placeholder="Enter Full Name"
-                                        value={user?.fullName}
+                                        value={userUpdate?.fullName}
+                                        onChange={handleChangeUser}
                                     />
                                 </Col>
                                 <Col>
                                     <Form.Label>Address</Form.Label>
                                     <Form.Control 
+                                        name="address"
                                         type="text"
                                         placeholder="Enter Address"
-                                        value={user?.address}>
+                                        value={userUpdate?.address}
+                                        onChange={handleChangeUser}>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
@@ -64,16 +127,20 @@ const UserInfoComponent: React.FunctionComponent = () => {
                                 <Col>
                                     <Form.Label>Company Name</Form.Label>
                                     <Form.Control 
+                                        name="companyName"
                                         type="text" 
                                         placeholder="Enter Company Name" 
-                                        value={user?.companyName}></Form.Control>
+                                        value={userUpdate?.companyName}
+                                        onChange={handleChangeUser}></Form.Control>
                                 </Col>
                                 <Col>
                                     <Form.Label>Company Address</Form.Label>
                                     <Form.Control
+                                        name="companyAddress"
                                         type="text"
                                         placeholder="Enter Company Address" 
-                                        value={user?.companyAddress}></Form.Control>
+                                        value={userUpdate?.companyAddress}
+                                        onChange={handleChangeUser}></Form.Control>
                                 </Col>
                             </Form.Group>
 
@@ -81,25 +148,41 @@ const UserInfoComponent: React.FunctionComponent = () => {
                                 <Col>
                                     <Form.Label>Company Size</Form.Label>
                                     <Form.Control
+                                         name="companySize"
                                         type="text"
                                         placeholder="Enter Company Size"
-                                        value={user?.companySize}></Form.Control>
+                                        value={userUpdate?.companySize}
+                                        onChange={handleChangeUser}></Form.Control>
                                 </Col>
                                 <Col>
                                     <Form.Label>Company Website</Form.Label>
                                     <Form.Control
+                                        name="companyWebsite"
                                         type="text"
                                         placeholder="Enter Company Website"
-                                        value={user?.companyWebsite}></Form.Control>
+                                        value={userUpdate?.companyWebsite}
+                                        onChange={handleChangeUser}></Form.Control>
                                 </Col>
                             </Form.Group>
                             <div style={{display: 'flex', justifyContent: 'center', padding: '20px'}}>
-                                <Button variant="primary" type="submit">Save Changes</Button>
+                                <Button variant="primary"  onClick={handleShow}>Save Changes</Button>
                             </div>
                         </Form>
                     </Card.Body>
                 </Card>
             </Container>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Hi, {user?.fullName}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to save the information?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="primary" onClick={handleUpdateUser}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
