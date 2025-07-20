@@ -3,6 +3,7 @@ import { loginReducer } from "./slices/auth.slice";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas/root.saga";
 import { registerReducer } from "./slices/register.slice";
+import { userReducer } from "./slices/user.slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -10,6 +11,7 @@ export const store = configureStore({
     reducer: {
         login: loginReducer,
         register: registerReducer,
+        user: userReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(sagaMiddleware),
