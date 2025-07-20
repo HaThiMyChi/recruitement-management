@@ -6,6 +6,7 @@ import AdminComponent from './pages/AdminComponent';
 import MainComponent from './pages/MainComponent';
 import JobComponent from './pages/JobComponent';
 import SignUpComponent from './pages/SignUpComponent';
+import UserInfoComponent from './pages/UserInfoComponent';
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const App: React.FC = () => {
       <Route path="/" element={<HomeComponent />}>
         <Route index element={<MainComponent />} />
         <Route path="/jobs" element={<JobComponent />} />
+        <Route path="/me" element={<UserInfoComponent />} />
       </Route>
       <Route path="/register" element={<SignUpComponent />} />
       <Route path="/admin" element={<AdminComponent />} />

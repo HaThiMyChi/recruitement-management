@@ -28,7 +28,7 @@ const HeaderComponent: React.FC = () => {
                                             <FontAwesomeIcon className={styles.icon} icon={faUser} />
                                         </>
                                     } id="collapsible-nav-dropdown">
-                                        <NavDropdown.Item href="#action/3.1">
+                                        <NavDropdown.Item as={Link} to={'/me'}>
                                             Dashboard
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="#action/3.2">
