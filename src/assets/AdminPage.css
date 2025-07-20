@@ -64,3 +64,22 @@
     color: gray;
 }
 
+.user_info .notification-box .dropdown {
+    line-height: 85px;
+    float: right;
+    padding-right: 25px;
+}
+
+.main_content {
+    width: 80%;
+    margin-left: 305px;
+}
+
+.job_manage_component .table .btn-col {
+    width: 185px;
+}
+
+.job_manage_component .table .btn-col button{
+    margin:0px 4px;
+}
+
