@@ -3,13 +3,13 @@ import { Job } from "../../models/Job";
 import { ListJobs } from "../types/job.type";
 
 interface JobState {
-    listJobs: Job[],
+    data: Job[],
     loading: boolean,
     error: string | null
 }
 
 const initialState: JobState = {
-    listJobs: [],
+    data: [],
     loading: false,
     error: null
 }
@@ -23,7 +23,7 @@ export const JobSlice = createSlice({
             state.error = null;
         },
         GetListJobsSuccess(state, action: PayloadAction<ListJobs>) {
-            state.listJobs = action.payload.jobs;
+            state.data = action.payload.jobs;
         },
         GetListJobsError(state, action) {
             state.error = action.payload;
@@ -38,7 +38,7 @@ export const JobSlice = createSlice({
             state.error = null;
         },
         GetListJobByIDSuccess(state, action: PayloadAction<ListJobs>) {
-            state.listJobs = action.payload.jobs;
+            state.data = action.payload.jobs;
         },
         GetListJobByIDError(state, action) {
             state.error = action.payload;
@@ -47,12 +47,12 @@ export const JobSlice = createSlice({
             state.loading = false;
         },
         GetListJobByStatus(state, action: PayloadAction<ListJobs>) {
-            state.listJobs = action.payload.jobs;
+            state.data = action.payload.jobs;
             state.loading = true;
             state.error = null;
         },
         DeleteJob(state, action: PayloadAction<ListJobs>) {
-            state.listJobs = action.payload.jobs;
+            state.data = action.payload.jobs;
             state.loading = true;
             state.error = null;
         }
