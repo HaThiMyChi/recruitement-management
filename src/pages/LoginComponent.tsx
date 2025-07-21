@@ -10,8 +10,8 @@ import { UserRole } from "../enums/UserRole";
 const LoginComponent: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const token = useSelector((state: RootState) => state.login.token);
-    const user = useSelector((state: RootState) => state.login.user);
+    const token = useSelector((state: RootState) => state.login.data?.token);
+    const user = useSelector((state: RootState) => state.login.data?.user);
 
     const [emailOrPhone, setEmailOrPhone] = useState('');
     const [password,setPassword] = useState('');

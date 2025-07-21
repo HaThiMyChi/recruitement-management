@@ -1,16 +1,30 @@
 import { Button, Container, NavDropdown, Row } from "react-bootstrap";
 import styles from "./HeaderComponent.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { logout } from "../../app/slices/auth.slice";
+import { toast } from "react-toastify";
 
 const HeaderComponent: React.FC = () => {
     // const user = useSelector((state: RootState) => state.login.user);
     // const token = useSelector((state: RootState) => state.login.token);
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;  // ! báo cho TypeScript: “Cái này chắc chắn không null đâu, cứ parse đi.”
+    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        dispatch(logout())
+        toast.success('Logout successfully')
+        navigate('/')
+    }
+
     return (
         <Container>
             <Row>
@@ -38,7 +52,7 @@ const HeaderComponent: React.FC = () => {
                                             Applied Jobs
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item href="#action/3.4">
+                                        <NavDropdown.Item onClick={handleLogout}>
                                             Logout
                                         </NavDropdown.Item>
                                     </NavDropdown>

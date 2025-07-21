@@ -6,6 +6,9 @@ import { faFire } from "@fortawesome/free-solid-svg-icons"
 
 
 const NavbarComponent: React.FC = () => {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+
     return (
        <Navbar bg="light" expand="lg">
         <Container>
@@ -14,9 +17,9 @@ const NavbarComponent: React.FC = () => {
                     <FontAwesomeIcon style={{ paddingRight: '5px' }} className={styles.icon} icon={faFire} />
                     Jobs
                 </Nav.Link>
-                <Nav.Link as={Link} className={styles.navLink} to="/applications">
+                {token && user && <Nav.Link as={Link} className={styles.navLink} to="/applications">
                     Applications
-                </Nav.Link>
+                </Nav.Link>}
             </Nav>
         </Container>
        </Navbar>
