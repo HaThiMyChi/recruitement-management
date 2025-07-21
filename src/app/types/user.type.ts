@@ -1,5 +1,5 @@
-import { UserRole } from "../../enums/UserRole";
-import { UserStatus } from "../../enums/UserStatus";
+import { UserRole } from "../../enums/UserRole"
+import { UserStatus } from "../../enums/UserStatus"
 
 export interface UserInfo {
     id: number,
@@ -14,12 +14,12 @@ export interface UserInfo {
     companyLogo?: string,
     companyAddress?: string,
     companySize?: string,
-    companyWebsite?: string,
+    companyWebsite?: string
     createdAt: Date,
     updatedAt: Date
 }
 
-export interface UserRequestUpdate  {
+export interface UserRequestUpdate {
     id?: number,
     email?: string,
     fullName?: string,
@@ -30,7 +30,6 @@ export interface UserRequestUpdate  {
     companySize?: string,
     companyWebsite?: string
 }
-
 export interface UserPayload {
     user: UserInfo,
     status?: number

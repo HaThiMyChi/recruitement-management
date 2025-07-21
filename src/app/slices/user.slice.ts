@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserInfo, UserPayload, UserRequestUpdate } from '../types/user.type';
 
 interface UserState {
@@ -14,23 +14,22 @@ const initialState: UserState = {
     error: null,
     status: undefined
 }
-
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
         getCurrentUser(state) {
-            state.loading = true;
-            state.error = null;
+            state.loading = true
+            state.error = null
         },
         getCurrentUserSuccess(state, action: PayloadAction<UserInfo>) {
-            state.data = action.payload;
+            state.data = action.payload
         },
         getCurrentUserError(state, action) {
-            state.error = action.payload;
+            state.error = action.payload
         },
         getCurrentUserComplete(state) {
-            state.loading = false;
+            state.loading = false
         },
 
         // Update User
@@ -49,7 +48,7 @@ export const userSlice = createSlice({
             state.loading = false;
         },
         resetUpdateUserState(state, action: PayloadAction<UserInfo | null>) {
-            state.data = action.payload;
+            state.data = action.payload
             state.error = null;
             state.status = undefined;
             state.loading = false;
@@ -60,5 +59,6 @@ export const userSlice = createSlice({
 export const {
     getCurrentUser, getCurrentUserSuccess, getCurrentUserError, getCurrentUserComplete,
     updateUser, updateUserSuccess, updateUserError, updateUserComplete, resetUpdateUserState
-} = userSlice.actions;
-export const userReducer = userSlice.reducer;
+} = userSlice.actions
+
+export const userReducer = userSlice.reducer
