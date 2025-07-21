@@ -2,7 +2,7 @@ import { call, CallEffect, PutEffect, put, takeLatest } from "redux-saga/effects
 import axiosCustom from "../../api/axiosCustom";
 import { UserEnpoint } from "../../enums/UserEnpoint";
 import { ListJobs } from "../types/job.type";
-import { GetListJobsComplete, GetListJobsError, GetListJobsSuccess } from "../slices/jobs.slice";
+import { GetListJobs, GetListJobsComplete, GetListJobsError, GetListJobsSuccess } from "../slices/jobs.slice";
 
 export default async function getListJobFunction(): Promise<ListJobs> {
     const respon = await axiosCustom.get(UserEnpoint.JOBS);
@@ -22,5 +22,5 @@ export function* handleGetJobs(): Generator<CallEffect<ListJobs> | PutEffect<any
 }
 
 export function* getListJobs() {
-    yield takeLatest([], handleGetJobs)
+    yield takeLatest(GetListJobs.type, handleGetJobs)
 }
