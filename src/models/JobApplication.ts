@@ -5,6 +5,7 @@ export interface JobApplication {
     id: number;
     jobId: number;   // Reference to the job being applied for
     userId: number;  // Reference to the candidate who applied
+    jobTitle: string;
     status: ApplicationStatus;
     resumeUrl?: string;  // URL/path to the candidate's resume
     coverLetter?: string;

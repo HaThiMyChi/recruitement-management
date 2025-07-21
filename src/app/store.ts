@@ -5,6 +5,7 @@ import rootSaga from "./sagas/root.saga";
 import { registerReducer } from "./slices/register.slice";
 import { userReducer } from "./slices/user.slice";
 import { jobsReducer } from "./slices/jobs.slice";
+import { applicationReducer } from "./slices/application.slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +15,7 @@ export const store = configureStore({
         register: registerReducer,
         user: userReducer,
         listJobs: jobsReducer,
+        application: applicationReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(sagaMiddleware),

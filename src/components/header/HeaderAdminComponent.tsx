@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 const HeaderAdminComponent = () => {
-    const user = useSelector((state: RootState) => state.login.user);
-    const token  = useSelector((state: RootState) => state.login.token);
+    const user = useSelector((state: RootState) => state.login.data?.user);
+    const token  = useSelector((state: RootState) => state.login.data?.token);
     const dispatch = useDispatch();
 
     const getListJobs = () => {
@@ -58,7 +58,7 @@ const HeaderAdminComponent = () => {
                             <Button variant="danger" className="btn_infor">
                                 <NavDropdown title={
                                     <>
-                                        <FontAwesomeIcon icon={faUser} />{user.email}
+                                        <FontAwesomeIcon icon={faUser} />{user?.email}
                                     </>
                                 } id="collapsible-nav-dropdown">
                                     <NavDropdown.Item href="#action/3.1">
