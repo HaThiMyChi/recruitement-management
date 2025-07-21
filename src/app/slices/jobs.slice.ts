@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Job } from "../../models/Job";
-import { ListJobs } from "../types/job.type";
 
 interface JobState {
     data: Job[],
@@ -22,8 +21,8 @@ export const JobSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        GetListJobsSuccess(state, action: PayloadAction<ListJobs>) {
-            state.data = action.payload.jobs;
+        GetListJobsSuccess(state, action: PayloadAction<Job[]>) {
+            state.data = action.payload;
         },
         GetListJobsError(state, action) {
             state.error = action.payload;
@@ -37,8 +36,8 @@ export const JobSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        GetListJobByIDSuccess(state, action: PayloadAction<ListJobs>) {
-            state.data = action.payload.jobs;
+        GetListJobByIDSuccess(state, action: PayloadAction<Job[]>) {
+            state.data = action.payload;
         },
         GetListJobByIDError(state, action) {
             state.error = action.payload;
@@ -46,13 +45,13 @@ export const JobSlice = createSlice({
         GetListJobByIDComplete(state) {
             state.loading = false;
         },
-        GetListJobByStatus(state, action: PayloadAction<ListJobs>) {
-            state.data = action.payload.jobs;
+        GetListJobByStatus(state, action: PayloadAction<Job[]>) {
+            state.data = action.payload;
             state.loading = true;
             state.error = null;
         },
-        DeleteJob(state, action: PayloadAction<ListJobs>) {
-            state.data = action.payload.jobs;
+        DeleteJob(state, action: PayloadAction<Job[]>) {
+            state.data = action.payload;
             state.loading = true;
             state.error = null;
         }
