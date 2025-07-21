@@ -4,6 +4,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas/root.saga";
 import { registerReducer } from "./slices/register.slice";
 import { userReducer } from "./slices/user.slice";
+import { jobsReducer } from "./slices/jobs.slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -12,12 +13,24 @@ export const store = configureStore({
         login: loginReducer,
         register: registerReducer,
         user: userReducer,
+        listJobs: jobsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(sagaMiddleware),
 });
 
+export const jobs = configureStore({
+    reducer: {
+        listJobs: jobsReducer
+    }
+})
+
+
+
 sagaMiddleware.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export type JobRootState = ReturnType<typeof jobs.getState>;
+export type JobDispatch = typeof jobs.dispatch;

@@ -20,3 +20,25 @@
 .icon {
     padding: 0 10px;
 }
+
+.linkElement {
+    padding: 0px 15px;
+    text-decoration: none;
+    color: wheat;
+    width: 120px;
+    text-align: left;
+}
+
+.btn_dropdown{
+    float: right;
+    width: 250px;
+    line-height: 85px;
+}
+
+.top-menu {
+    float: left;
+    line-height: 85px;
+    font-size: 18px;
+    padding-left: 15px;
+}
+
