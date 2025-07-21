@@ -14,6 +14,9 @@ const NavbarComponent: React.FC = () => {
                     <FontAwesomeIcon style={{ paddingRight: '5px' }} className={styles.icon} icon={faFire} />
                     Jobs
                 </Nav.Link>
+                <Nav.Link as={Link} className={styles.navLink} to="/applications">
+                    Applications
+                </Nav.Link>
             </Nav>
         </Container>
        </Navbar>
