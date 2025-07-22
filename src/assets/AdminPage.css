@@ -97,4 +97,29 @@
     color: black;
 }
 
+.main_content .filter_group{
+    margin: 15px 5px;
+}
+
+.main_content .filter_group input{
+    margin: 0px 5px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+.main_content .filter_group select{
+    height: 28px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.main_content .filter_group button{
+    background-color: #0d6efd;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    color: white;
+}
+
+
 

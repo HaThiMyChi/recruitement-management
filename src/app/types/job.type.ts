@@ -1,10 +1,17 @@
 import { Job } from "../../models/Job"
-import { JobStatus } from '../../enums/JobStatus';
 
-export interface ListJobs {
-    jobs: Job[]
+export interface JobListResponse {
+    data: Job[],
+    meta: {
+        currentPage: number
+        itemsPerPage: number
+        totalItems: number
+        totalPages: number
+    }
 }
 
-export interface JobFilter {
-    job: Job;
+export interface RequestFilter {
+    id?: number
+    jobType?: string
+    status?: string
 }

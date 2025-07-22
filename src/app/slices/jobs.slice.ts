@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Job } from "../../models/Job";
+import { JobListResponse, RequestFilter } from "../types/job.type";
 
 interface JobState {
-    data: Job[],
+    data: JobListResponse | null,
     loading: boolean,
     error: string | null
 }
 
 const initialState: JobState = {
-    data: [],
+    data: null,
     loading: false,
     error: null
 }
@@ -21,7 +21,7 @@ export const JobSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        GetListJobsSuccess(state, action: PayloadAction<Job[]>) {
+        GetListJobsSuccess(state, action: PayloadAction<JobListResponse>) {
             state.data = action.payload;
         },
         GetListJobsError(state, action) {
@@ -32,25 +32,20 @@ export const JobSlice = createSlice({
         },
 
         // get list job by id
-        GetListJobByID(state) {
+        FilterJobs(state, action: PayloadAction<RequestFilter | null | undefined>) {
             state.loading = true;
             state.error = null;
         },
-        GetListJobByIDSuccess(state, action: PayloadAction<Job[]>) {
+        FilterJobsSuccess(state, action: PayloadAction<JobListResponse>) {
             state.data = action.payload;
         },
-        GetListJobByIDError(state, action) {
+        FilterJobsError(state, action) {
             state.error = action.payload;
         },
-        GetListJobByIDComplete(state) {
+        FilterJobsComplete(state) {
             state.loading = false;
         },
-        GetListJobByStatus(state, action: PayloadAction<Job[]>) {
-            state.data = action.payload;
-            state.loading = true;
-            state.error = null;
-        },
-        DeleteJob(state, action: PayloadAction<Job[]>) {
+        DeleteJob(state, action: PayloadAction<JobListResponse>) {
             state.data = action.payload;
             state.loading = true;
             state.error = null;
@@ -59,7 +54,8 @@ export const JobSlice = createSlice({
 })
 
 export const {
-    GetListJobs, GetListJobsSuccess, GetListJobsError, GetListJobsComplete, GetListJobByID, GetListJobByStatus, DeleteJob
+    GetListJobs, GetListJobsSuccess, GetListJobsError, GetListJobsComplete, 
+    FilterJobs, FilterJobsComplete, FilterJobsError, FilterJobsSuccess, DeleteJob
 } = JobSlice.actions;
 
 export const jobsReducer = JobSlice.reducer;

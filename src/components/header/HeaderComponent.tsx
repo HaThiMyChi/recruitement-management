@@ -39,7 +39,7 @@ const HeaderComponent: React.FC = () => {
                                 <Button variant="danger" className={styles.button}>
                                     <NavDropdown title={
                                         <>
-                                            <FontAwesomeIcon className={styles.icon} icon={faUser} />
+                                            <FontAwesomeIcon className={styles.icon} icon={faUser} /> {user?.email}
                                         </>
                                     } id="collapsible-nav-dropdown">
                                         <NavDropdown.Item as={Link} to={'/me'}>
