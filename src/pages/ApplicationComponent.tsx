@@ -43,7 +43,7 @@ const ApplicationComponent: React.FunctionComponent = () => {
             <Row>
                 <Pagination style={{display: 'flex', justifyContent: 'center'}}>
                     {[...Array(totalPage)].map((_, index) => (
-                        <Pagination.Item key={index + 1} active={currentPage === index + 1}>
+                        <Pagination.Item key={index + 1} active={currentPage === index + 1} onClick={() => setPage(index + 1)}>
                             {index + 1}
                         </Pagination.Item>
                     ))}
