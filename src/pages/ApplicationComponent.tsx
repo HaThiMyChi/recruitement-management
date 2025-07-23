@@ -26,7 +26,7 @@ const ApplicationComponent: React.FunctionComponent = () => {
         <Container>
             {
                 applications && meta && applications?.map(application => (
-                    <Row style={{padding: '15px'}}>
+                    <Row style={{padding: '15px'}} key={`application-${application.id}`}>
                         <div style={{display: 'flex'}} className="application-container">
                             <Link to={`/applications/${application.id}`}>
                                 <img style={{ width: '80px', height: '80px' }} src="https://congtytui1.com/storage/images/companies/heineken-vietnam.png"></img>

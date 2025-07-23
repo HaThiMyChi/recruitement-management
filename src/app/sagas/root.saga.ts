@@ -3,7 +3,7 @@ import {authLogin} from './auth.saga';
 import { authRegister } from './register.saga';
 import userSaga from './user.saga';
 import { filterJobs, getListJobs } from './jobs.saga';
-import { applicationSaga } from './application.saga';
+import applicationSaga from './application.saga';
 
 export default function* rootSaga() {
     yield all([

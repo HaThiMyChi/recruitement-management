@@ -9,6 +9,7 @@ import SignUpComponent from './pages/SignUpComponent';
 import UserInfoComponent from './pages/UserInfoComponent';
 import JobManageComponent from './pages/JobManageComponent';
 import ApplicationComponent from './pages/ApplicationComponent';
+import ApplicationDetailComponent from './pages/ApplicationDetailComponent';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route index element={<MainComponent />} />
         <Route path="/jobs" element={<JobComponent />} />
         <Route path='/applications' element={<ApplicationComponent />} />
+        <Route path='/applications/:id' element={<ApplicationDetailComponent />} />
         <Route path="/me" element={<UserInfoComponent />} />
       </Route>
       <Route path="/register" element={<SignUpComponent />} />
