@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { getApplications } from "../app/slices/application.slice"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClock } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
 
 const ApplicationComponent: React.FunctionComponent = () => {
     const dispatch = useDispatch()
@@ -27,7 +28,9 @@ const ApplicationComponent: React.FunctionComponent = () => {
                 applications && meta && applications?.map(application => (
                     <Row style={{padding: '15px'}}>
                         <div style={{display: 'flex'}} className="application-container">
-                            <img style={{ width: '80px', height: '80px' }} src="https://congtytui1.com/storage/images/companies/heineken-vietnam.png"></img>
+                            <Link to={`/applications/${application.id}`}>
+                                <img style={{ width: '80px', height: '80px' }} src="https://congtytui1.com/storage/images/companies/heineken-vietnam.png"></img>
+                            </Link>
 
                             <div className="application" style={{paddingLeft: '15px'}}>
                                 <h6>{application.jobTitle}</h6>
