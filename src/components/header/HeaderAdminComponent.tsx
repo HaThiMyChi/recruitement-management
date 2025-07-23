@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 const HeaderAdminComponent = () => {
-    const user = useSelector((state: RootState) => state.login.data?.user);
-    const token  = useSelector((state: RootState) => state.login.data?.token);
+    const token = localStorage.getItem('token');
+    const user  = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
     const dispatch = useDispatch();
 
     const getListJobs = () => {
@@ -54,7 +54,7 @@ const HeaderAdminComponent = () => {
 
                 <div className="user_infor_div">
                     {
-                        token ? (
+                        token && user ? (
                             <Button variant="danger" className="btn_infor">
                                 <NavDropdown title={
                                     <>
