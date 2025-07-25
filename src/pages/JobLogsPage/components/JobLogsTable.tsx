@@ -22,11 +22,20 @@ const JobLogsTable: React.FC<JobLogsTableProps> = ({
     }
 
     const handleRowClick = (logId: number, e: React.MouseEvent) => {
-
+        console.log('e target', e.target)
+        // Prevent row click when clicking on checkbox and delete button
+        if ((e.target as HTMLElement).tagName === 'INPUT' ||
+            (e.target as HTMLElement).tagName === 'BUTTON' ||
+            (e.target as HTMLElement).closest('button')) {
+            return;
+        }
+        onSelectJobLog(logId);    
     }
+    
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, logId: number) => {
-
+        onCheckboxChange(logId, e.target.checked);
+        e.stopPropagation();
     }
 
     const handleDeleteClick = (e: React.MouseEvent, logId: number) => {

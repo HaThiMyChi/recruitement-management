@@ -31,11 +31,11 @@ export interface FetchJobLogsParams {
 
 export interface JobLogDetail {
     id: number;
-    job_id: number;
-    user_id: number;
+    jobId: number;
+    userId: number;
     action: JobLogAction;
     details: string;
-    created_at: string;
-    user_name: string;
-    job_title: string;
+    createdAt: string;
+    userName: string;
+    jobTitle: string;
 }

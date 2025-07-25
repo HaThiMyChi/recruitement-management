@@ -48,10 +48,20 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
   };
 
   const handleJobLogClick = (logId: number) => {
-     
+    if (onSelectJobLog) {
+      onSelectJobLog(logId);
+    } else {
+      navigate(`/admin/job-logs/${logId}`)
+    }
   }
 
   const handleCheckboxChange  = (logId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedLogIds(prev => [...prev, logId]);
+    } else {
+      setSelectedLogIds(prev => prev.filter(id => id !== logId));
+    }
+   
     
   }
 

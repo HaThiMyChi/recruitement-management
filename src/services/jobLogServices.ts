@@ -1,5 +1,5 @@
 import axiosCustom from "../api/axiosCustom";
-import { FetchJobLogsParams, PaginatedJobLogsResponse } from "../app/types/jobLogTypes";
+import { FetchJobLogsParams, JobLogDetail, PaginatedJobLogsResponse } from "../app/types/jobLogTypes";
 import { UserRole } from "../enums/UserRole";
 import { getCurrentUserRole } from "./authService";
 
@@ -30,6 +30,16 @@ export const fetchJobLogs = async (
         throw new Error(`Error fetching job logs: ${errorMessage}`);
     }
 };
+
+export const fetchJobLogById = async(id: number): Promise<JobLogDetail> => {
+    try {
+        const response = await axiosCustom.get(`/job-logs/${id}`);
+        return response.data;
+    } catch(error: any) {
+        const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch job log details';
+        throw new Error(`Error fetching job log details: ${errorMessage}`);
+    }
+}
 
 /**
  * Delete a single job log by ID
