@@ -36,7 +36,7 @@ const HeaderAdminComponent = () => {
                             </Link>
                         </div>
                         <div className='manageJobLog componentBox'>
-                            <Link to={'/'} className='linkElement'>
+                            <Link to={'/admin/job-logs'} className='linkElement'>
                                 Manage Job Logs
                             </Link>
                         </div>

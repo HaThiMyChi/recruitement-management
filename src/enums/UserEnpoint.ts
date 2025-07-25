@@ -1,7 +1,7 @@
 export enum UserEnpoint {
-    LOGIN = 'login',
-    REGISTER = 'register',
-    ME = "me",
-    USERS = 'users',
-    JOBS = 'jobs',
+    LOGIN = 'api/login',
+    REGISTER = 'api/register',
+    ME = "api/me",
+    USERS = 'api/users',
+    JOBS = 'api/jobs',
 }
