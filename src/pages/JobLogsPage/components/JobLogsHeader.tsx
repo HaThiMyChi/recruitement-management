@@ -26,9 +26,9 @@ const JobLogsHeader: React.FC<JobLogsHeaderProps> = ({
             }}>
                 <input 
                     type="text"
-                    name="job_id"
+                    name="jobId"
                     placeholder="Filter by Job ID"
-                    value={filters.job_id || ''}
+                    value={filters.jobId || ''}
                     onChange={onFilterChange}
                     style={{
                         padding: '8px',
@@ -39,9 +39,9 @@ const JobLogsHeader: React.FC<JobLogsHeaderProps> = ({
                 /> 
                 <input 
                     type="text"
-                    name="user_id"
+                    name="userId"
                     placeholder="Filter by User ID"
-                    value={filters.user_id || ''}
+                    value={filters.userId || ''}
                     onChange={onFilterChange}
                     style={{
                         padding: '8px', 

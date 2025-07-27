@@ -14,6 +14,10 @@ const JobLogSummary: React.FC<JobLogSummaryProps> = ({jobLog}) => {
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
             marginBottom: '20px'
         }}>
+             <div style={detailRowStyle}>
+                <strong>Log ID:</strong>
+                <span>{jobLog.jobId}</span>
+            </div>
             <div style={detailRowStyle}>
                 <strong>Job:</strong>
                 <span>{jobLog.jobTitle} (ID: {jobLog.jobId})</span>

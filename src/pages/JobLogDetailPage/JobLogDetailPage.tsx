@@ -7,6 +7,7 @@ import JobLogSummary from "./components/JobLogSummary";
 import { fetchJobLogById } from "../../services/jobLogServices";
 import ErrorMessage from "../../components/shared/ErrorMessage";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
+import LogDetailsPanel from "./components/LogDetailsPanel";
 
 interface JobLogDetailPageProps {
     jobLogId?: number;
@@ -66,6 +67,7 @@ const JobLogDetailPage: React.FC<JobLogDetailPageProps> = ({jobLogId}) => {
         <div style={{padding: '20px', fontFamily: 'Arial, sans-serif', maxWidth: '1000px', margin: '0 auto'}}>
             {!jobLogId && <JobLogHeader />}
             <JobLogSummary jobLog={jobLog} />
+            <LogDetailsPanel details={jobLog.details} />
         </div>
     )
 

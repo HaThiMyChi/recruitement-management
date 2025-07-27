@@ -24,8 +24,8 @@ export interface PaginatedJobLogsResponse {
 export interface FetchJobLogsParams {
     page?: number;
     limit?: number;
-    job_id?: number | string; // Allow string for input field, convert before sending
-    user_id?: number | string; // Allow string for input field, convert before sending
+    jobId?: number | string; // Allow string for input field, convert before sending
+    userId?: number | string; // Allow string for input field, convert before sending
     action?: JobLogAction | string; // Allow string for input field
 }
 

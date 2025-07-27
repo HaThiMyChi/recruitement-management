@@ -18,8 +18,8 @@ export const fetchJobLogs = async (
     const cleanParams: Record<string, string | number> = {};
     if (params.page) cleanParams.page = params.page;
     if (params.limit) cleanParams.limit = params.limit;
-    if (params.job_id && String(params.job_id).trim() !== '') cleanParams.job_id = params.job_id;
-    if (params.user_id && String(params.user_id).trim() !== '') cleanParams.user_id = params.user_id;
+    if (params.jobId && String(params.jobId).trim() !== '') cleanParams.jobId = params.jobId;
+    if (params.userId && String(params.userId).trim() !== '') cleanParams.userId = params.userId;
     if (params.action && String(params.action).trim() !== '') cleanParams.action = params.action;
 
     try {
@@ -60,5 +60,27 @@ export const deleteJobLog = async(id: number): Promise<void> => {
             throw new Error(errorMessage);
         }
         throw new Error(`Error deleting job log: ${error.message || 'An unexpected error occurred'}`);
+    }
+};
+
+export const deleteMultipleJobLogs = async (ids: number[]): Promise<{deleted: number, failed: number[] }> => {
+    try {
+        const response = await axiosCustom.delete('/job-logs', {
+            data: {ids} // For DELETE requests with a body, use 'data' property
+        });
+        return response.data;
+    } catch (error: any) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                throw new Error('Unauthorized: You need admin privileges to delete job logs');
+            }
+            if (error.response.status === 403) {
+                throw new Error('Forbidden: You do not have permission to delete job logs');
+            }
+            const errorMessage = error.response.data?.message || `Failed to delete job logs: ${error.response.statusText}`;
+            throw new Error(errorMessage);
+        }
+        throw new Error(`Error deleting job logs: ${error.message || 'An unexpected error occurred'}`);
+
     }
 };

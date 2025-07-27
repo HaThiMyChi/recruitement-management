@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { FetchJobLogsParams, JobLogSummary, PaginatedJobLogsResponse, PaginationMeta } from "../../app/types/jobLogTypes";
 import ErrorMessage from "../../components/shared/ErrorMessage";
 import JobLogsTable from "./components/JobLogsTable";
-import { deleteJobLog, fetchJobLogs } from "../../services/jobLogServices";
+import { deleteJobLog, deleteMultipleJobLogs, fetchJobLogs } from "../../services/jobLogServices";
 import JobLogsPagination from "./components/JobLogsPagination";
 import ConfirmationModal from "../../components/shared/ConfirmationModal";
+import BulkActions from "./components/BulkActions";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 interface JobLogsPageProps {
   onSelectJobLog?: (logId: number) => void;
@@ -22,15 +24,22 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
   const [selectedLogIds, setSelectedLogIds] = useState<number[]>([]);
   const [logToDelete, setLogToDelete] = useState<number | null>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-  
+    const [bulkDeleteModalOpen, setBulkDeleteModalOpen] = useState<boolean>(false);
+
   // Use a ref to store selectedLogIds to access current value without creating dependencies
   const selectedLogIdsRef = useRef<number[]>([]);
+
+  // Update the ref whenever selectedLogIds changes
+  useEffect(() => {
+    selectedLogIdsRef.current = selectedLogIds;
+    console.log('selectedLogIdsRef.current', selectedLogIdsRef.current)
+  }, [selectedLogIds]);
 
   const [filters, setFilters] = useState<FetchJobLogsParams>({
     page: 1,
     limit: 10,
-    job_id: '',
-    user_id: '',
+    jobId: '',
+    userId: '',
     action: ''
   });
 
@@ -61,8 +70,6 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
     } else {
       setSelectedLogIds(prev => prev.filter(id => id !== logId));
     }
-   
-    
   }
 
    const handleDeleteClick = (logId: number) => {
@@ -71,7 +78,10 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
   };
 
   const handlePageChange = (newPage: number) => {
-
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      page: newPage,
+    }));
   };
 
   const handleDeleteConfirm = async() => {
@@ -112,16 +122,16 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
       const paramsToFetch: FetchJobLogsParams = {...currentFilters};
 
       // Ensure only valid numbers are passed for numeric fields, or they are omitted
-      if (paramsToFetch.job_id && !isNaN(Number(paramsToFetch.job_id))) {
-        paramsToFetch.job_id = Number(paramsToFetch.job_id);
+      if (paramsToFetch.jobId && !isNaN(Number(paramsToFetch.jobId))) {
+        paramsToFetch.jobId = Number(paramsToFetch.jobId);
       } else {
-        delete paramsToFetch.job_id;
+        delete paramsToFetch.jobId;
       }
 
-      if (paramsToFetch.user_id && !isNaN(Number(paramsToFetch.user_id))) {
-        paramsToFetch.user_id = Number(paramsToFetch.user_id);
+      if (paramsToFetch.userId && !isNaN(Number(paramsToFetch.userId))) {
+        paramsToFetch.userId = Number(paramsToFetch.userId);
       } else {
-        delete paramsToFetch.user_id;
+        delete paramsToFetch.userId;
       }
       
       if (!paramsToFetch.action) {
@@ -130,6 +140,16 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
 
       const data = await fetchJobLogs(paramsToFetch);
       setJobLogsData(data);
+
+      // Use the ref to get current selected IDs without creating a dependency
+      const currentSelectedIds = selectedLogIdsRef.current;
+      if (currentSelectedIds.length > 0) {
+        const existingIds = data.data.map(log => log.id);
+        const filteredIds = currentSelectedIds.filter(id => existingIds.includes(id));
+        if (filteredIds.length !== currentSelectedIds.length) {
+          setSelectedLogIds(filteredIds);
+        }
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message)
@@ -141,10 +161,55 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
     }
   }, []); // No dependencies here, we're using the ref instead
 
+  const handleBulkDeleteConfirm = async () => {
+    if (selectedLogIds.length === 0) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await deleteMultipleJobLogs(selectedLogIds);
+
+      // Show success message with details
+      setSuccessMessage(`Successfully deleted ${result.deleted} job log(s).${
+        result.failed.length > 0 ? `Failed to delete ${result.failed.length} job log(s).` : ''
+      }`);
+
+      // Clear selection
+      setSelectedLogIds([]);
+
+      // refresh the data
+      await loadJobLogs(filters);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred while deleting job logs.');
+      }
+    } finally {
+      setLoading(false);
+      setBulkDeleteModalOpen(false);
+    }
+
+  }
+
+  const handleClearSelection = () => {
+    setSelectedLogIds([]);
+  }
+
+  const handleBulkDeleteClick = () => {
+    if (selectedLogIds.length === 0) return;
+    setBulkDeleteModalOpen(true);
+  }
+
+
   useEffect(() => {
     loadJobLogs(filters);
   }, [loadJobLogs, filters]);
 
+  if (loading && !jobLogsData) {
+    return <LoadingSpinner />
+  }
 
   const logs: JobLogSummary[] = jobLogsData?.data || [];
   const meta: PaginationMeta | undefined = jobLogsData?.meta;
@@ -171,18 +236,28 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
           </div>
         )}
 
-        <>
-          <JobLogsTable
-            logs={logs} 
-            onSelectJobLog={handleJobLogClick}
-            selectedLogIds={selectedLogIds}
-            onCheckboxChange={handleCheckboxChange}
-            onDeleteLog={handleDeleteClick}
-          />
+        <BulkActions 
+          selectedCount={selectedLogIds.length}
+          onDeleteSelected={handleBulkDeleteClick}
+          onClearSelection={handleClearSelection}
+        />
 
-          <JobLogsPagination meta={meta} onPageChange={handlePageChange} />
-        </>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <JobLogsTable
+              logs={logs} 
+              onSelectJobLog={handleJobLogClick}
+              selectedLogIds={selectedLogIds}
+              onCheckboxChange={handleCheckboxChange}
+              onDeleteLog={handleDeleteClick}
+            />
 
+            <JobLogsPagination meta={meta} onPageChange={handlePageChange} />
+          </>
+        )}
+       
         <ConfirmationModal
           isOpen={deleteModalOpen}
           title="Delete Job Log"
@@ -191,6 +266,16 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
           cancelText="Cancel"
           onConfirm={handleDeleteConfirm}
           onCancel={() => setDeleteModalOpen(false)}
+        />
+
+        <ConfirmationModal
+          isOpen={bulkDeleteModalOpen}
+          title="Delete Multiple Job Logs"
+          message={`Are you sure you want to delete ${selectedLogIds.length} job log(s)? This action cannot be undone.`}
+          confirmText="Delete All"
+          cancelText="Cancel"
+          onConfirm={handleBulkDeleteConfirm}
+          onCancel={() => setBulkDeleteModalOpen(false)}
         />
 
       </div>
