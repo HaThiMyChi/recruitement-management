@@ -27,7 +27,7 @@ const JobLogHeader: React.FC = () => {
                     gap: '5px'
                 }}
             >
-                <span>Back to Job Logs</span> 
+                <span className='fa fa-chevron-left me-2'>Back to Job Logs</span> 
             </button>
         </div>
     )
