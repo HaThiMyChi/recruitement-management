@@ -14,4 +14,5 @@ export interface RequestFilter {
     id?: number
     jobType?: string
     status?: string
+    page: number
 }

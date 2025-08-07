@@ -1,38 +1,52 @@
 import { call, CallEffect, PutEffect, put, takeLatest, take } from "redux-saga/effects";
 import axiosCustom from "../../api/axiosCustom";
-import { UserEnpoint } from "../../enums/UserEnpoint";
 import { GetListJobs, GetListJobsComplete, GetListJobsError, GetListJobsSuccess, FilterJobs, FilterJobsComplete, FilterJobsError, FilterJobsSuccess } from "../slices/jobs.slice";
-import { Job } from "../../models/Job";
 import { JobListResponse, RequestFilter } from "../types/job.type";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 
-export async function GetListJobFunction(): Promise<JobListResponse> {
-    const respon = await axiosCustom.get(UserEnpoint.JOBS);
-    return respon.data;
+export async function GetListJobFunction(filterCondition?: RequestFilter | null): Promise<JobListResponse> {
+    const paramRequest: RequestFilter = {page: 1}
+
+    if (filterCondition !== null) {
+        if (filterCondition?.id) paramRequest.id = filterCondition.id
+        if (filterCondition?.jobType) paramRequest.jobType = filterCondition.jobType
+        if (filterCondition?.status) paramRequest.status = filterCondition.status
+        paramRequest.page = filterCondition?.page ?? 1
+    }
+
+    if (filterCondition !== null) {
+        const respon = await axiosCustom.get('api/jobs', {
+            params: paramRequest
+        });
+        return respon.data;
+    } else {
+        const respon = await axiosCustom.get('api/jobs');
+        return respon.data;
+    }
 }
 
 export async function FilterJobsFunction(filterCondition: RequestFilter): Promise<JobListResponse> {
-    const filterParams: RequestFilter = {}
-    if (filterCondition.id) {
-        filterParams.id = filterCondition.id
-    }
-    if (filterCondition.jobType) {
-        filterParams.jobType = filterCondition.jobType
-    }
-    if (filterCondition.status) {
-        filterParams.status = filterCondition.status
-    }
+    let apiUrl = 'api/jobs';
+    if (filterCondition.id) apiUrl = `${apiUrl}?id=${filterCondition.id}`
+    if (filterCondition.jobType) apiUrl = `${apiUrl}?jobType=${filterCondition.jobType}`
+    if (filterCondition.status) apiUrl = `${apiUrl}?status=${filterCondition.status}`
 
-    const respon = await axiosCustom.get(UserEnpoint.JOBS, {params: filterParams});
-    return respon.data
+    const respon = await axiosCustom.get(apiUrl);
+    return respon.data;
 }
 
-export function* handleGetJobs(): Generator<CallEffect<JobListResponse> | PutEffect<any>, void, JobListResponse> {
+export function* handleGetJobs(action: PayloadAction<RequestFilter>): Generator<CallEffect<JobListResponse> | PutEffect<any>, void, JobListResponse> {
     try {
-        const response: JobListResponse = yield call(GetListJobFunction);
-        yield put(GetListJobsSuccess(response))
-        console.log('handleGetJobs', response)
+        if (action.payload !== null) {
+            const response: JobListResponse = yield call(GetListJobFunction, action.payload);
+            yield put(GetListJobsSuccess(response));
+            console.log('handleGetJobs without filter', response)
+        } else {
+            const response: JobListResponse = yield call(GetListJobFunction, null);
+            yield put(GetListJobsSuccess(response));
+            console.log('handleGetJobs do not filter', response)
+        }
     } catch (e) {
         yield put(GetListJobsError(e))
     } finally {

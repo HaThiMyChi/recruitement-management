@@ -17,7 +17,7 @@ export const JobSlice = createSlice({
     name: 'jobs',
     initialState: initialState,
     reducers: {
-        GetListJobs(state) {
+        GetListJobs(state, action: PayloadAction<RequestFilter | null | undefined>) {
             state.loading = true;
             state.error = null;
         },
