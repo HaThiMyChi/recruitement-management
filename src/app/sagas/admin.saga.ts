@@ -31,7 +31,7 @@ export async function actionUserFunction(action: User): Promise<MessageResponse>
         userId: id
     }
 
-    if (status !== UserStatus.ACTIVE) {
+    if (status === UserStatus.ACTIVE || status === UserStatus.PENDING) {
         // deactive user
         const res = await axiosCustom.post(`${UserEnpoint.USERS}/deactivate`, param);
         return res.data;

@@ -22,7 +22,7 @@ const HeaderComponent: React.FC = () => {
         localStorage.removeItem('user');
         dispatch(logout())
         toast.success('Logout successfully')
-        navigate('/')
+        navigate('/login')
     }
 
     return (
