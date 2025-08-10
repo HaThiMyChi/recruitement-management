@@ -1,3 +1,3 @@
 export enum ApplicationEnpoint {
-    GET = 'applications'
+    GET = 'api/applications'
 }

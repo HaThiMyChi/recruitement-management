@@ -26,7 +26,7 @@ const HeaderAdminComponent = () => {
                     </div>
                     <div className='tabbar'>
                         <div className='manageUser componentBox'>
-                            <Link to={'/'} className='linkElement'>
+                            <Link to={'/admin/users'} className='linkElement'>
                                 <i className='bi bi-person'></i>Manage Users
                             </Link>
                         </div>
@@ -47,9 +47,9 @@ const HeaderAdminComponent = () => {
             <div className='user_info'>
                 <div className='top-menu'>
                     <Link to={'/admin'} className='linkElement'>Dashboard</Link>
-                    <Link to={'/admin'} className='linkElement'>Users</Link>
+                    <Link to={'/admin/users'} className='linkElement'>Users</Link>
                     <Link to={'/admin/manage_jobs'} className='linkElement'>Job</Link>
-                    <Link to={'/admin'} className='linkElement'>Job Log</Link>
+                    <Link to={'/admin/job-logs'} className='linkElement'>Job Log</Link>
                 </div>
 
                 <div className="user_infor_div">

@@ -1,6 +1,6 @@
 export enum JobStatus {
-    PENDING = 'PENDING',
-    ACTIVE = 'ACTIVE',
-    EXPIRED = 'EXPIRED',
-    CLOSED = 'CLOSED'
+    PENDING = 'Pending',
+    ACTIVE = 'Active',
+    EXPIRED = 'Expired',
+    CLOSED = 'Closed'
 }
