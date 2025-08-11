@@ -13,6 +13,7 @@ import ApplicationDetailComponent from './pages/ApplicationDetailComponent';
 import JobLogsPage from './pages/JobLogsPage/JobLogsPage';
 import JobLogDetailPage from './pages/JobLogDetailPage/JobLogDetailPage';
 import UserManagementComponent from './pages/UserManagementComponent';
+import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
 
 const App: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const App: React.FC = () => {
         <Route path="/admin/job-logs" element={<JobLogsPage />} />
         <Route path="/admin/job-logs/:id" element={<JobLogDetailPage />} />
         <Route path="/admin/users" element={<UserManagementComponent />} />
+        <Route path="/admin/applications" element={<ApplicationsPage />} />
       </Route>
     </Routes>
   );

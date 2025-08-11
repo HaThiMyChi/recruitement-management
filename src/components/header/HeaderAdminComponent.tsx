@@ -20,7 +20,7 @@ const HeaderAdminComponent = () => {
             <div className="sidebar">
                 <div className="sidebar-header border-bottom">
                     <div className="navbar-logo">
-                        <Link to={'/admin'}>
+                        <Link to={'/admin/'}>
                             <img src="https://c.topdevvn.com/v4/assets/images/td-logo.png" alt="" />
                         </Link>
                     </div>
@@ -38,6 +38,11 @@ const HeaderAdminComponent = () => {
                         <div className='manageJobLog componentBox'>
                             <Link to={'/admin/job-logs'} className='linkElement'>
                                 Manage Job Logs
+                            </Link>
+                        </div>
+                        <div className="manageJobLog componentBox">
+                            <Link to={'/admin/applications'} className="linkElement">
+                                Manage Applications
                             </Link>
                         </div>
                     </div>
