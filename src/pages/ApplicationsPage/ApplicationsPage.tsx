@@ -1,10 +1,14 @@
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import ApplicationsHeader from "./components/ApplicationsHeader";
 import ApplicationsTable from "./components/ApplicationsTable";
 import { useNavigate } from "react-router-dom";
 import { ApplicationSummary, FetchApplicationsParams, PaginatedApplicationsResponse, PaginationMeta } from "../../types/applicationTypes";
 import { fetchApplications } from "../../services/applicationService";
+import ApplicationsPagination from "./components/ApplicationsPagination";
+import ErrorMessage from "../../components/shared/ErrorMessage";
+import SuccessMessage from "../../components/shared/SuccessMessage";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 interface ApplicationsPageProps {
     onSelectApplication?: (applicationId: number) => void;
@@ -52,12 +56,19 @@ const ApplicationsPage: React.FC<ApplicationsPageProps> = ({onSelectApplication 
         loadApplications(filters)
     }, [loadApplications, filters]);
 
-    const handleFilterChange = () => {
+    const handleFilterChange = (e: React.ChangeEvent<HTMLElement>) => {
+        const target = e.target as HTMLInputElement | HTMLSelectElement;
+        const {name, value} = target;
 
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
     }
 
-    const handleFilterSubmit = () => {
-
+    const handleFilterSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        setFilters(prevFilters => ({...prevFilters, page: 1}))
     }
 
     const handleApplicationClick = () => {
@@ -72,6 +83,13 @@ const ApplicationsPage: React.FC<ApplicationsPageProps> = ({onSelectApplication 
     }
 
     const handleStatusChangeClick = (applicationId: number) => {
+    }
+
+    const handlePageChange = (page: number) => {
+        setFilters(prev  => ({
+            ...prev,
+            page
+        }));
     }
 
     const applications: ApplicationSummary[] = applicationsData?.data || [];
@@ -89,17 +107,26 @@ const ApplicationsPage: React.FC<ApplicationsPageProps> = ({onSelectApplication 
                     onFilterSubmit={handleFilterSubmit}
                 />
 
-                <>
-                    <ApplicationsTable 
-                        applications={applications}
-                        onSelectApplication={handleApplicationClick}
-                        selectedApplicationIds={selectedApplicationIds}
-                        onCheckboxChange={handleCheckboxChange}
-                        onDeleteApplication={handleDeleteClick}
-                        onChangeStatus={handleStatusChangeClick}
+                {error && <ErrorMessage message={error}></ErrorMessage>}
 
-                    />
-                </>
+                {successMessage && <SuccessMessage message={successMessage} />}
+                
+                {loading ? (
+                    <LoadingSpinner />
+                ) : (
+                    <>
+                        <ApplicationsTable 
+                            applications={applications}
+                            onSelectApplication={handleApplicationClick}
+                            selectedApplicationIds={selectedApplicationIds}
+                            onCheckboxChange={handleCheckboxChange}
+                            onDeleteApplication={handleDeleteClick}
+                            onChangeStatus={handleStatusChangeClick}
+
+                        />
+                        <ApplicationsPagination meta={meta} onPageChange={handlePageChange} />
+                    </>
+                )}
             </div>
         </div>
     )
