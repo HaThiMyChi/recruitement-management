@@ -1,4 +1,4 @@
-import { Pagination, Row } from "react-bootstrap";
+import { Col, Pagination, Row } from "react-bootstrap";
 import { PaginationMeta } from "../../../types/applicationTypes"
 
 interface ApplicationsPaginationProps {
@@ -68,22 +68,24 @@ const ApplicationsPagination: React.FC<ApplicationsPaginationProps> = ({meta, on
     };
 
     return (
-        <Row className="d-flex justify-content-between align-items-center">
-            <div>
-                Showing {(meta.currentPage - 1) * meta.itemsPerPage + 1} to {Math.min(meta.currentPage * meta.itemsPerPage, meta.totalItems)} of {meta.totalItems} applications
-            </div>
+        <Row className="mt-3">
+            <Col className="d-flex justify-content-between align-items-center">
+                <div>
+                    Showing {(meta.currentPage - 1) * meta.itemsPerPage + 1} to {Math.min(meta.currentPage * meta.itemsPerPage, meta.totalItems)} of {meta.totalItems} applications
+                </div>
 
-            <Pagination>
-                <Pagination.Prev
-                    disabled={meta.currentPage <= 1}
-                    onClick={() => onPageChange(meta.currentPage - 1)}
-                />
+                <Pagination>
+                    <Pagination.Prev
+                        disabled={meta.currentPage <= 1}
+                        onClick={() => onPageChange(meta.currentPage - 1)}
+                    />
 
-                {createPaginationItems()}
-                <Pagination.Next 
-                    disabled={meta.currentPage >= meta.totalPages}
-                    onClick={() => onPageChange(meta.currentPage + 1)}/>
-            </Pagination>
+                    {createPaginationItems()}
+                    <Pagination.Next 
+                        disabled={meta.currentPage >= meta.totalPages}
+                        onClick={() => onPageChange(meta.currentPage + 1)}/>
+                </Pagination>
+            </Col>
         </Row>
     )
 }
