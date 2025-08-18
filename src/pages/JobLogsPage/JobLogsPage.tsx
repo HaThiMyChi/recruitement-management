@@ -48,8 +48,9 @@ const JobLogsPage: React.FC<JobLogsPageProps>= ({onSelectJobLog}) => {
     setFilters(prevFilters => ({...prevFilters, page: 1}));
   }
 
-  const handleFilterChange  = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const {name, value} = e.target;
+  const handleFilterChange  = (e: React.ChangeEvent<HTMLElement>) => {
+    const target = e.target as HTMLInputElement | HTMLSelectElement;
+    const {name, value} = target;
     setFilters(prevFilters => ({
       ...prevFilters,
       [name]: value
