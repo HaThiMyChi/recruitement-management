@@ -12,6 +12,7 @@ import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import StatusChangeModal from "./components/StatusChangeModal";
 import ConfirmationModal from "../../components/shared/ConfirmationModal";
 import BulkActions from "./components/BulkActions";
+import ApplicationDetailModal from "./components/ApplicationDetailModal";
 
 interface ApplicationsPageProps {
     onSelectApplication?: (applicationId: number) => void;
@@ -31,6 +32,9 @@ const ApplicationsPage: React.FC<ApplicationsPageProps> = ({onSelectApplication 
     const [applicationToDelete, setApplicationToDelete] = useState<number | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
     const [bulkDeleteModalOpen, setBulkDeleteModalOpen] = useState<boolean>(false);
+
+    const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
+    const [showDetailModal, setShowDetailModal] = useState(false);
 
     // Use a ref to store selectedApplicationIds to access current value without creating dependencies
     const selectedApplicationIdsRef = useRef<number[]>([]);
@@ -102,11 +106,8 @@ const ApplicationsPage: React.FC<ApplicationsPageProps> = ({onSelectApplication 
     }
 
     const handleApplicationClick = (applicationId: number) => {
-        if (onSelectApplication) {
-            onSelectApplication(applicationId);
-        } else {
-            navigate(`/applications/${applicationId}`);
-        }
+        setSelectedApplicationId(applicationId);
+        setShowDetailModal(true);
 
     }
 
@@ -301,6 +302,12 @@ const ApplicationsPage: React.FC<ApplicationsPageProps> = ({onSelectApplication 
                     applicationId={applicationToUpdateStatus}
                     onSubmit={handleStatusChangeSubmit}
                     onCancel={() => setStatusChangeModalOpen(false)}
+                />
+
+                <ApplicationDetailModal 
+                    show={showDetailModal}
+                    applicationId={selectedApplicationId}
+                    onHide={() => setShowDetailModal(false)}
                 />
             </div>
         </div>
