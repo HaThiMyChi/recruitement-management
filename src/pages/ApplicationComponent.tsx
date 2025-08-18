@@ -25,7 +25,7 @@ const ApplicationComponent: React.FunctionComponent = () => {
     return (
         <Container>
             {
-                applications && meta && applications?.map(application => (
+                applications && meta && applications.length > 0 ? (applications?.map(application => (
                     <Row style={{padding: '15px'}} key={`application-${application.id}`}>
                         <div style={{display: 'flex'}} className="application-container">
                             <Link to={`/applications/${application.id}`}>
@@ -42,6 +42,11 @@ const ApplicationComponent: React.FunctionComponent = () => {
                         </div>
                     </Row>
                 ))
+                ) : (
+                    <Row>
+                        <h4>No data application</h4>
+                    </Row>
+                )
             }
             <Row>
                 <Pagination style={{display: 'flex', justifyContent: 'center'}}>

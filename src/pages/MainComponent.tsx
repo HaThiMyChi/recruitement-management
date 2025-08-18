@@ -1,6 +1,10 @@
+import { Container } from "react-bootstrap";
+
 const MainComponent: React.FC = () => {
     return (
-        <h1>Content</h1>
+       <Container>
+        <h1>Content page</h1>
+       </Container>
     )
 }
 

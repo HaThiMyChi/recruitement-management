@@ -1,6 +1,10 @@
+import { Container } from "react-bootstrap";
+
 const JobComponent: React.FC = () => {
     return (
-        <h1>Job Component</h1>
+        <Container>
+            <h1>Job page</h1>
+        </Container>
     )
 }
 
