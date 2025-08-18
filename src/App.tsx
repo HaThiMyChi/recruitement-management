@@ -14,6 +14,7 @@ import JobLogsPage from './pages/JobLogsPage/JobLogsPage';
 import JobLogDetailPage from './pages/JobLogDetailPage/JobLogDetailPage';
 import UserManagementComponent from './pages/UserManagementComponent';
 import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
+import AdminDashboard from './pages/AdminDashboard';
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
       </Route>
       <Route path="/register" element={<SignUpComponent />} />
       <Route path="/admin" element={<AdminComponent />}>
+        <Route index element={<AdminDashboard />} />
         <Route path="/admin/manage_jobs" element={<JobManageComponent />} />
         <Route path="/admin/job-logs" element={<JobLogsPage />} />
         <Route path="/admin/job-logs/:id" element={<JobLogDetailPage />} />
