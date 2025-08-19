@@ -1,60 +1,88 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JobListResponse, RequestFilter } from "../types/job.type";
+import { Job } from "../../models/Job";
+import { stat } from "fs";
 
-interface JobState {
-    data: JobListResponse | null,
-    loading: boolean,
-    error: string | null
+interface JobsState {
+    jobs: Job[];
+    selectedJob: Job | null;
+    isLoading: boolean;
+    error: any;
+    meta: {
+        totalItems: number;
+        itemsPerPage: number;
+        totalPages: number;
+        currentPage: number;
+    
+    } | null;
+    filters: RequestFilter;
 }
 
-const initialState: JobState = {
-    data: null,
-    loading: false,
-    error: null
-}
+const initialState: JobsState = {
+    jobs: [],
+    selectedJob: null,
+    isLoading: false,
+    error: null,
+    meta: null,
+    filters: {
+        page: 1,
+        limit: 10,
+        sortBy: "createdAt",
+        sortOrder: "desc",
+    }
+};
 
 export const JobSlice = createSlice({
     name: 'jobs',
     initialState: initialState,
     reducers: {
-        GetListJobs(state, action: PayloadAction<RequestFilter | null | undefined>) {
-            state.loading = true;
+        GetListJobs: (state, action: PayloadAction<RequestFilter>) => {
+            state.isLoading = true;
             state.error = null;
+            state.filters = {...state.filters, ...action.payload}
         },
-        GetListJobsSuccess(state, action: PayloadAction<JobListResponse>) {
-            state.data = action.payload;
+        GetListJobsSuccess: (state, action: PayloadAction<JobListResponse>) => {
+           state.jobs = action.payload.data;
+           state.meta = action.payload.meta;
+           state.error = null;
         },
-        GetListJobsError(state, action) {
+        GetListJobsError: (state, action: PayloadAction<any>) =>  {
             state.error = action.payload;
         },
-        GetListJobsComplete(state) {
-            state.loading = false;
+        GetListJobsComplete: (state) => {
+            state.isLoading = false;
+        },
+
+        ClearFilters: (state) => {
+            state.filters = {
+                page: 1,
+                limit: 10,
+                sortBy: "createdAt",
+                sortOrder: "desc"
+            }
         },
 
         // get list job by id
         FilterJobs(state, action: PayloadAction<RequestFilter | null | undefined>) {
-            state.loading = true;
-            state.error = null;
+            
         },
         FilterJobsSuccess(state, action: PayloadAction<JobListResponse>) {
-            state.data = action.payload;
+           
         },
         FilterJobsError(state, action) {
-            state.error = action.payload;
+            
         },
         FilterJobsComplete(state) {
-            state.loading = false;
+            
         },
         DeleteJob(state, action: PayloadAction<JobListResponse>) {
-            state.data = action.payload;
-            state.loading = true;
-            state.error = null;
+            
         }
     }
 })
 
 export const {
-    GetListJobs, GetListJobsSuccess, GetListJobsError, GetListJobsComplete, 
+    GetListJobs, GetListJobsSuccess, GetListJobsError, GetListJobsComplete, ClearFilters,
     FilterJobs, FilterJobsComplete, FilterJobsError, FilterJobsSuccess, DeleteJob
 } = JobSlice.actions;
 

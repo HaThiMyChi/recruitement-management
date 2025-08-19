@@ -6,7 +6,7 @@ const HomeComponent: React.FC = () => {
     return (
         <>
             <HeaderComponent />
-            <NavbarComponent />
+            {/* <NavbarComponent /> */}
             <Outlet />
         </>
     )

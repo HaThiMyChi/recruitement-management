@@ -15,7 +15,7 @@ export const store = configureStore({
         login: loginReducer,
         register: registerReducer,
         user: userReducer,
-        listJobs: jobsReducer,
+        jobs: jobsReducer,
         application: applicationReducer,
         admin: adminReducer
     },

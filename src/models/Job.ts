@@ -12,8 +12,9 @@ export interface Job {
     minSalary?: number;
     maxSalary?: number;
     status: JobStatus;
-    publishedAt?: Date;
-    expiredAt?: Date;
-    createdAt: Date;
-    updatedAt: Date;
+    publishedAt: string;
+    expiredAt: string;
+    createdAt: string;
+    updatedAt: string;
+
 }

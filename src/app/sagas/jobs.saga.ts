@@ -9,9 +9,14 @@ export async function GetListJobFunction(filterCondition?: RequestFilter | null)
     const paramRequest: RequestFilter = {page: 1}
 
     if (filterCondition !== null) {
-        if (filterCondition?.id) paramRequest.id = filterCondition.id
+        if (filterCondition?.location) paramRequest.location = filterCondition.location
         if (filterCondition?.jobType) paramRequest.jobType = filterCondition.jobType
-        if (filterCondition?.status) paramRequest.status = filterCondition.status
+        if (filterCondition?.q) paramRequest.q = filterCondition.q
+        if (filterCondition?.minSalary) paramRequest.minSalary = filterCondition.minSalary
+        if (filterCondition?.maxSalary) paramRequest.maxSalary = filterCondition.maxSalary
+        if (filterCondition?.sortBy) paramRequest.sortBy = filterCondition.sortBy
+        if (filterCondition?.sortOrder) paramRequest.sortOrder = filterCondition.sortOrder
+
         paramRequest.page = filterCondition?.page ?? 1
     }
 
@@ -28,9 +33,9 @@ export async function GetListJobFunction(filterCondition?: RequestFilter | null)
 
 export async function FilterJobsFunction(filterCondition: RequestFilter): Promise<JobListResponse> {
     let apiUrl = 'api/jobs';
-    if (filterCondition.id) apiUrl = `${apiUrl}?id=${filterCondition.id}`
-    if (filterCondition.jobType) apiUrl = `${apiUrl}?jobType=${filterCondition.jobType}`
-    if (filterCondition.status) apiUrl = `${apiUrl}?status=${filterCondition.status}`
+    // if (filterCondition.id) apiUrl = `${apiUrl}?id=${filterCondition.id}`
+    // if (filterCondition.jobType) apiUrl = `${apiUrl}?jobType=${filterCondition.jobType}`
+    // if (filterCondition.status) apiUrl = `${apiUrl}?status=${filterCondition.status}`
 
     const respon = await axiosCustom.get(apiUrl);
     return respon.data;

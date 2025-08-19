@@ -14,7 +14,7 @@ const HeaderAdminComponent = () => {
     const dispatch = useDispatch();
 
     const getListJobs = () => {
-        dispatch(GetListJobs());
+        // dispatch(GetListJobs());
     }
 
     const canAccessUsers = userRole && userRole !== UserRole.CANDIDATE;
@@ -42,11 +42,11 @@ const HeaderAdminComponent = () => {
                             </div>
                         )}
                        
-                        <div className='manageJob componentBox'>
+                        {/* <div className='manageJob componentBox'>
                             <Link to={'/admin/manage_jobs'} className='linkElement' onClick={getListJobs}>
                                 Manage Jobs
                             </Link>
-                        </div>
+                        </div> */}
                         {canAccessJobLogs && (
                             <div className='manageJobLog componentBox'>
                                 <Link to={'/admin/job-logs'} className='linkElement'>

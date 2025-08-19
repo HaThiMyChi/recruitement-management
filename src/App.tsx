@@ -4,7 +4,6 @@ import HomeComponent from './pages/HomeComponent';
 import LoginComponent from './pages/LoginComponent';
 import AdminComponent from './pages/AdminComponent';
 import MainComponent from './pages/MainComponent';
-import JobComponent from './pages/JobComponent';
 import SignUpComponent from './pages/SignUpComponent';
 import UserInfoComponent from './pages/UserInfoComponent';
 import JobManageComponent from './pages/JobManageComponent';
@@ -15,6 +14,7 @@ import JobLogDetailPage from './pages/JobLogDetailPage/JobLogDetailPage';
 import UserManagementComponent from './pages/UserManagementComponent';
 import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
 import AdminDashboard from './pages/AdminDashboard';
+import JobListPage from './pages/JobsPage/JobsPage';
 
 const App: React.FC = () => {
   return (
@@ -22,7 +22,7 @@ const App: React.FC = () => {
       <Route path="/login" element={<LoginComponent />} />
       <Route path="/" element={<HomeComponent />}>
         <Route index element={<MainComponent />} />
-        <Route path="/jobs" element={<JobComponent />} />
+        <Route path="/jobs" element={<JobListPage />} />
         <Route path='/applications' element={<ApplicationComponent />} />
         <Route path='/applications/:id' element={<ApplicationDetailComponent />} />
         <Route path="/me" element={<UserInfoComponent />} />
