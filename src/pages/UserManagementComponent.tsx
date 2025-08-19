@@ -227,13 +227,13 @@ const UserManagementComponent: React.FC = () => {
 const getRoleBadgeVariant = (role: UserRole): string => {
     switch (role) {
         case UserRole.ADMIN:
-            return 'danger';
+            return 'primary';
         case UserRole.RRECRUITER:
             return 'info';
         case UserRole.CANDIDATE:
-            return 'primary';
-        default:
             return 'secondary';
+        default:
+            return 'light';
     }
 };
 
@@ -244,7 +244,7 @@ const getStatusBadgeVariant = (status: UserStatus): string => {
         case UserStatus.PENDING:
             return 'warning';
         case UserStatus.DEACTIVATED:
-            return 'danger';
+            return 'danger'; 
         default:
             return 'secondary';
     }
