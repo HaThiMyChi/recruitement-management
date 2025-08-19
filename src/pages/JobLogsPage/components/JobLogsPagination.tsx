@@ -1,3 +1,4 @@
+import { Col, Pagination, Row } from "react-bootstrap";
 import { PaginationMeta } from "../../../app/types/jobLogTypes";
 
 interface JobLogsPaginationProps {
@@ -9,36 +10,29 @@ const JobLogsPagination: React.FC<JobLogsPaginationProps> = ({meta, onPageChange
     if (!meta) return null;
 
     return (
-        <div style={{
-            marginTop: '20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        }}>
-            <button
-                onClick={() => onPageChange(meta.currentPage - 1)}
-                disabled={meta.currentPage <=1}
-                style={{
-                    ...paginationButtonStyle,
-                    opacity: meta.currentPage <= 1 ? 0.5 : 1,
-                    cursor: meta.currentPage <= 1 ? 'not-allowed' : 'pointer'
-                }}
-            >
-                Previous
-            </button>
-            <span>Page {meta.currentPage} of {meta.totalPages} (Total: {meta.totalItems})</span>
-            <button
-                onClick={() => onPageChange(meta.currentPage + 1)}
-                disabled={meta.currentPage >= meta.totalPages}
-                style={{
-                    ...paginationButtonStyle,
-                    opacity: meta.currentPage >= meta.totalPages ? 0.5 : 1,
-                    cursor: meta.currentPage >= meta.totalPages ? 'not-allowed' : 'pointer'
-                }}  
-            >
-                Next
-            </button>
-        </div>
+        <Row className="mt-4 align-items-center">
+            <Col xs={4}>
+                <Pagination>
+                    <Pagination.Prev 
+                        onClick={() => onPageChange(meta.currentPage - 1)}
+                        disabled={meta.currentPage <=1}
+                    />
+                </Pagination>
+            </Col>
+            
+            <Col xs={4} className="text-center">
+                <span>Page {meta.currentPage} of {meta.totalPages} (Total: {meta.totalItems}) </span>
+            </Col>
+
+            <Col xs={4} className="d-flex justify-content-end">
+                <Pagination>
+                    <Pagination.Next 
+                        onClick={() => onPageChange(meta.currentPage + 1)}
+                        disabled={meta.currentPage >= meta.totalPages}
+                    />
+                </Pagination>
+            </Col>
+        </Row>
     )
 };
 

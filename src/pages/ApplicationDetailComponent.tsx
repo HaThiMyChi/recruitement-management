@@ -26,7 +26,7 @@ const ApplicationDetailComponent: React.FunctionComponent = () => {
         <Container>
             <Row style={{padding: '15px'}}>
                 <div style={{display: 'flex'}} className="application-container">
-                    <img style={{ width: '110px', height: '110px' }} src="https://congtytui1.com/storage/images/companies/heineken-vietnam.png"></img>
+                    <img style={{ width: '110px', height: '110px' }} src="https://media.loveitopcdn.com/3807/logo-heineken-2.png"></img>
 
                     <div className="application" style={{paddingLeft: '15px'}}>
                         <h5>{application?.jobTitle}</h5>

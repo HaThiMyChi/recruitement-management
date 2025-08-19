@@ -8,7 +8,7 @@ interface AdminState {
     loading: boolean,
     error: string,
     status?: number,
-    message?: MessageResponse
+    message?: MessageResponse | null
 }
 
 const initialState: AdminState = {
@@ -59,13 +59,16 @@ export const adminSlice = createSlice({
         },
         actionUserComplete(state) {
             state.loading = false
+        },
+        resetMessage(state) {
+            state.message = null;
         }
     }
 })
 
 export const {
     getUsers, getUsersSuccess, getUsersError, getUsersComplete,
-    actionUser, actionUserSuccess, actionUserError, actionUserComplete
+    actionUser, actionUserSuccess, actionUserError, actionUserComplete, resetMessage
 } = adminSlice.actions;
 
 export const adminReducer = adminSlice.reducer;

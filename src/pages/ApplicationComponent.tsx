@@ -29,7 +29,7 @@ const ApplicationComponent: React.FunctionComponent = () => {
                     <Row style={{padding: '15px'}} key={`application-${application.id}`}>
                         <div style={{display: 'flex'}} className="application-container">
                             <Link to={`/applications/${application.id}`}>
-                                <img style={{ width: '80px', height: '80px' }} src="https://congtytui1.com/storage/images/companies/heineken-vietnam.png"></img>
+                                <img style={{ width: '80px', height: '80px' }} src="https://media.loveitopcdn.com/3807/logo-heineken-2.png"></img>
                             </Link>
 
                             <div className="application" style={{paddingLeft: '15px'}}>

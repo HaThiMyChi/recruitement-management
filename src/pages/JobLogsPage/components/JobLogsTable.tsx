@@ -1,3 +1,4 @@
+import { Badge, Button, Form, Table } from "react-bootstrap";
 import { JobLogSummary } from "../../../app/types/jobLogTypes";
 
 interface JobLogsTableProps {
@@ -45,81 +46,63 @@ const JobLogsTable: React.FC<JobLogsTableProps> = ({
     }
 
     return (
-        <table style={{width: '100%', borderCollapse: 'collapse', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
-            <thead>
-                <tr style={{ backgroundColor: '#f8f9fa' }}> 
-                    <th style={tableHeaderStyle}>
-                        <input 
+        <Table hover bordered responsive className="shadow-sm">
+            <thead className="bg-light">
+                <tr> 
+                    <th className="align-middle">
+                        <Form.Check 
                         type="checkbox"
                         onChange={(e) => {
                             const isChecked = e.target.checked;
                             logs.forEach(log => onCheckboxChange(log.id, isChecked));
                         }}
                         checked={logs.length > 0 && selectedLogIds.length === logs.length}
-                        style={{cursor: 'pointer'}}
                     />
                     </th>
-                    <th style={tableHeaderStyle}>Log ID</th>
-                    <th style={tableHeaderStyle}>Job Title</th>
-                    <th style={tableHeaderStyle}>User Name</th>
-                    <th style={tableHeaderStyle}>Action</th>
-                    <th style={tableHeaderStyle}>Timestamp</th>
-                    <th style={tableHeaderStyle}>Actions</th>
+                    <th className="align-middle">Log ID</th>
+                    <th className="align-middle">Job Title</th>
+                    <th className="align-middle">User Name</th>
+                    <th className="align-middle">Action</th>
+                    <th className="align-middle">Timestamp</th>
+                    <th className="align-middle">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {logs.map(log => (
                     <tr
                         key={log.id}
-                        style={{
-                            borderBottom: '1px solid #eee',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.2s',
-                            backgroundColor: selectedLogIds.includes(log.id) ? '#f0f7ff' : 'transparent'
-
-                        }}
+                        className={selectedLogIds.includes(log.id) ? 'bg-light-blue' : ''}
                         onClick={(e) => handleRowClick(log.id, e)}
-                        onMouseOver={(e) => {
-                            if (!selectedLogIds.includes(log.id)) {
-                                e.currentTarget.style.backgroundColor = '#f5f5f5'
-                            }
-                        }}
-                        onMouseOut={(e) => {
-                            if (!selectedLogIds.includes(log.id)) {
-                                e.currentTarget.style.backgroundColor = 'transparent';
-                            }
-                        }}
                     >
-                        <td style={tableCellStyle}>
-                            <input 
+                        <td>
+                            <Form.Check 
                                 type="checkbox"
                                 checked={selectedLogIds.includes(log.id)}
                                 onChange={(e) => handleCheckboxChange(e, log.id)}
-                                style={{cursor: 'pointer'}}
                             />
                         </td>
-                        <td style={tableCellStyle}>{log.id}</td>
-                        <td style={tableCellStyle}>{log.jobTitle}</td>
-                        <td style={tableCellStyle}>{log.userName}</td>
-                        <td style={tableCellStyle}>{log.action.replace(/_/g, ' ').toUpperCase()}</td>
-                        <td style={tableCellStyle}>{new Date(log.createdAt).toLocaleString()}</td>
-                        <td style={tableCellStyle}>
-                            <button
+                        <td>{log.id}</td>
+                        <td>{log.jobTitle}</td>
+                        <td>{log.userName}</td>
+                        <td>
+                            <Badge bg="secondary">
+                                {log.action.replace(/_/g, ' ').toUpperCase()}
+                            </Badge>
+                        </td>
+                        <td>{new Date(log.createdAt).toLocaleString()}</td>
+                        <td>
+                            <Button
                                 onClick={(e) => handleDeleteClick(e, log.id)}
-                                style={{ 
-                                    backgroundColor: '#dc3545',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    padding: '5px 10px',
-                                    cursor: 'pointer'
-                                }}
-                            >Delete</button>
+                                size="sm"
+                                variant="danger"
+                            >
+                                Delete
+                            </Button>
                         </td>
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </Table>
     )
 };
 
