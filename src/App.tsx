@@ -15,6 +15,7 @@ import UserManagementComponent from './pages/UserManagementComponent';
 import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
 import AdminDashboard from './pages/AdminDashboard';
 import JobListPage from './pages/JobsPage/JobsPage';
+import JobDetailPage from './pages/JobDetailPage/JobDetailPage';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
       <Route path="/" element={<HomeComponent />}>
         <Route index element={<MainComponent />} />
         <Route path="/jobs" element={<JobListPage />} />
+        <Route path="/jobs/:id" element={<JobDetailPage />} />
         <Route path='/applications' element={<ApplicationComponent />} />
         <Route path='/applications/:id' element={<ApplicationDetailComponent />} />
         <Route path="/me" element={<UserInfoComponent />} />

@@ -1,8 +1,9 @@
 import { call, CallEffect, PutEffect, put, takeLatest, take } from "redux-saga/effects";
 import axiosCustom from "../../api/axiosCustom";
-import { GetListJobs, GetListJobsComplete, GetListJobsError, GetListJobsSuccess, FilterJobs, FilterJobsComplete, FilterJobsError, FilterJobsSuccess } from "../slices/jobs.slice";
+import { GetListJobs, GetListJobsComplete, GetListJobsError, GetListJobsSuccess, GetJobByIdError, GetJobByIdComplete, GetJobByIdSuccess, GetJobById } from "../slices/jobs.slice";
 import { JobListResponse, RequestFilter } from "../types/job.type";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { Job } from "../../models/Job";
 
 
 export async function GetListJobFunction(filterCondition?: RequestFilter | null): Promise<JobListResponse> {
@@ -42,6 +43,11 @@ export async function FilterJobsFunction(filterCondition: RequestFilter): Promis
     return respon.data;
 }
 
+export async function GetJobByIdFunction(id?: string): Promise<Job> {
+    const response = await axiosCustom.get(`api/jobs/${id}`);
+    return response.data;
+}
+
 export function* handleGetJobs(action: PayloadAction<RequestFilter>): Generator<CallEffect<JobListResponse> | PutEffect<any>, void, JobListResponse> {
     try {
         if (action.payload !== null) {
@@ -61,14 +67,27 @@ export function* handleGetJobs(action: PayloadAction<RequestFilter>): Generator<
 }
 
 export function* handleFilterJobs(action: PayloadAction<RequestFilter>): Generator<CallEffect<JobListResponse> | PutEffect<any>, void, JobListResponse> {
+    // try {
+    //     const param = action.payload
+    //     const response: JobListResponse = yield call(FilterJobsFunction, param)
+    //     yield put(FilterJobsSuccess(response))
+    // } catch (e) {
+    //     yield put(FilterJobsError(e))
+    // } finally {
+    //     yield put(FilterJobsComplete())
+    // }
+}
+
+export function* handleGetJobById(action: PayloadAction<string>):Generator<CallEffect<Job> | PutEffect<any>, void, Job> {
     try {
-        const param = action.payload
-        const response: JobListResponse = yield call(FilterJobsFunction, param)
-        yield put(FilterJobsSuccess(response))
+        if (action.payload !== null) {
+            const response: Job = yield call(GetJobByIdFunction, action.payload);
+            yield put(GetJobByIdSuccess(response))
+        }
     } catch (e) {
-        yield put(FilterJobsError(e))
+        yield put(GetJobByIdError(e))
     } finally {
-        yield put(FilterJobsComplete())
+        yield put(GetJobByIdComplete())
     }
 }
 
@@ -77,5 +96,9 @@ export function* getListJobs() {
 }
 
 export function* filterJobs() {
-    yield takeLatest(FilterJobs.type, handleFilterJobs)
+    // yield takeLatest(FilterJobs.type, handleFilterJobs)
+}
+
+export function* getJobById() {
+    yield takeLatest(GetJobById.type, handleGetJobById)
 }

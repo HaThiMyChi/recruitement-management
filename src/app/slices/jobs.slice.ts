@@ -32,6 +32,18 @@ const initialState: JobsState = {
     }
 };
 
+interface JobByIdState {
+    data: Job | null;
+    loading: boolean;
+    error: string | null;
+}
+
+const initialJobByIdState: JobByIdState = {
+    data: null,
+    loading: false,
+    error: null
+};
+
 export const JobSlice = createSlice({
     name: 'jobs',
     initialState: initialState,
@@ -61,29 +73,37 @@ export const JobSlice = createSlice({
                 sortOrder: "desc"
             }
         },
+    }
+});
 
-        // get list job by id
-        FilterJobs(state, action: PayloadAction<RequestFilter | null | undefined>) {
-            
+export const jobByIdSlice = createSlice({
+    name: "job",
+    initialState: initialJobByIdState,
+    reducers: {
+        // get job by id
+        GetJobById(state, action: PayloadAction<number | undefined | null>) {
+            state.loading = true;
+            state.error = null;
         },
-        FilterJobsSuccess(state, action: PayloadAction<JobListResponse>) {
-           
+        GetJobByIdSuccess(state, action: PayloadAction<Job>) {
+            state.data = action.payload;
         },
-        FilterJobsError(state, action) {
-            
+        GetJobByIdError(state, action) {
+            state.error = action.payload;
         },
-        FilterJobsComplete(state) {
-            
-        },
-        DeleteJob(state, action: PayloadAction<JobListResponse>) {
-            
+        GetJobByIdComplete(state) {
+            state.loading = false;
         }
     }
-})
+});
 
 export const {
     GetListJobs, GetListJobsSuccess, GetListJobsError, GetListJobsComplete, ClearFilters,
-    FilterJobs, FilterJobsComplete, FilterJobsError, FilterJobsSuccess, DeleteJob
 } = JobSlice.actions;
 
+export const {
+    GetJobById, GetJobByIdSuccess, GetJobByIdError, GetJobByIdComplete
+} = jobByIdSlice.actions;
+
 export const jobsReducer = JobSlice.reducer;
+export const jobByIdReducer = jobByIdSlice.reducer;

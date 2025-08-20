@@ -4,7 +4,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas/root.saga";
 import { registerReducer } from "./slices/register.slice";
 import { userReducer } from "./slices/user.slice";
-import { jobsReducer } from "./slices/jobs.slice";
+import { jobByIdReducer, jobsReducer } from "./slices/jobs.slice";
 import { applicationReducer } from "./slices/application.slice";
 import { adminReducer } from "./slices/admin.slice";
 
@@ -16,6 +16,7 @@ export const store = configureStore({
         register: registerReducer,
         user: userReducer,
         jobs: jobsReducer,
+        jobById: jobByIdReducer,
         application: applicationReducer,
         admin: adminReducer
     },

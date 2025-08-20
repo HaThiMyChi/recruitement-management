@@ -7,7 +7,7 @@ import { faPenToSquare, faTrash, faMagnifyingGlass  } from "@fortawesome/free-so
 import {useForm} from 'react-hook-form'
 import { JobStatus } from "../enums/JobStatus";
 import { RequestFilter } from "../app/types/job.type";
-import { FilterJobs, GetListJobs } from "../app/slices/jobs.slice";
+// import { FilterJobs, GetListJobs } from "../app/slices/jobs.slice";
 import { Pagination } from "react-bootstrap";
 import CreateNewJob from "./popupScreen/CreateNewJob";
 
