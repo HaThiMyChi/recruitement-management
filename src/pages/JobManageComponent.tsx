@@ -18,42 +18,42 @@ interface valueForm {
 }
 
 function JobManageComponent() {
-    const dispatch = useDispatch()
-    const [job, setjob] = useState<Job[]>([]);
+    // const dispatch = useDispatch()
+    // const [job, setjob] = useState<Job[]>([]);
     
-    const [page, setPage] = useState(1);
-    const [jobType, setJobType] = useState('');
-    const [status, setStatus] = useState('');
-    const [showModal, setShowModal] = useState(false);
-    var listJobs = useSelector((state: JobRootState) => state.listJobs.data?.data);
-    console.log('listJobs', listJobs);
-    var page_number = useSelector((state: JobRootState) => state.listJobs.data?.meta);
+    // const [page, setPage] = useState(1);
+    // const [jobType, setJobType] = useState('');
+    // const [status, setStatus] = useState('');
+    // const [showModal, setShowModal] = useState(false);
+    // var listJobs = useSelector((state: JobRootState) => state.listJobs.data?.data);
+    // console.log('listJobs', listJobs);
+    // var page_number = useSelector((state: JobRootState) => state.listJobs.data?.meta);
 
-    const pageNumbers = [];
-    const totalPages = page_number?.totalPages ?? 1;
-    let active = page_number?.currentPage;
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(
-            <Pagination.Item key={i} active={i === active} onClick={() => setPage(Number(i))}>{i}</Pagination.Item>
-        );
-    }
+    // const pageNumbers = [];
+    // const totalPages = page_number?.totalPages ?? 1;
+    // let active = page_number?.currentPage;
+    // for (let i = 1; i <= totalPages; i++) {
+    //     pageNumbers.push(
+    //         <Pagination.Item key={i} active={i === active} onClick={() => setPage(Number(i))}>{i}</Pagination.Item>
+    //     );
+    // }
 
-    const {register, handleSubmit, formState: {errors}} = useForm<RequestFilter>();
+    // const {register, handleSubmit, formState: {errors}} = useForm<RequestFilter>();
     
-    const onsubmit = (data: RequestFilter) => {
-        setJobType(data.jobType ?? '');
-        setStatus(data.status ?? '');
-    }
+    // const onsubmit = (data: RequestFilter) => {
+    //     setJobType(data.jobType ?? '');
+    //     setStatus(data.status ?? '');
+    // }
 
-    useEffect(() => {
-        dispatch(GetListJobs({jobType, status, page}))
-    }, [jobType, status, page]);
+    // useEffect(() => {
+    //     dispatch(GetListJobs({jobType, status, page}))
+    // }, [jobType, status, page]);
 
-    useEffect(() => {
-        if (Array.isArray(listJobs)) {
-            setjob(listJobs);
-        }
-    }, [listJobs]);
+    // useEffect(() => {
+    //     if (Array.isArray(listJobs)) {
+    //         setjob(listJobs);
+    //     }
+    // }, [listJobs]);
 
     // useEffect(() => {
     //     <CreateNewJob show={showModal} onClose={() => {
@@ -63,7 +63,7 @@ function JobManageComponent() {
 
     return ( 
         <div className='main_content'>
-            <div className="filter_group">
+            {/* ``<div className="filter_group">
                 <form onSubmit={handleSubmit(onsubmit)}>
                     <input {...register('id', {
                         validate: (value) => !value || !isNaN(Number(value)) || 'Must be a number'
@@ -128,7 +128,7 @@ function JobManageComponent() {
                     show={showModal}
                     onClose={() => setShowModal(false)}
                 />
-            )}
+            )}`` */}
         </div>
      );
 }

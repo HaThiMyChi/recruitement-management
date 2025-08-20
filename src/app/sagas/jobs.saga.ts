@@ -11,6 +11,7 @@ export async function GetListJobFunction(filterCondition?: RequestFilter | null)
     if (filterCondition !== null) {
         if (filterCondition?.location) paramRequest.location = filterCondition.location
         if (filterCondition?.jobType) paramRequest.jobType = filterCondition.jobType
+        if (filterCondition?.status) paramRequest.status = filterCondition.status
         if (filterCondition?.q) paramRequest.q = filterCondition.q
         if (filterCondition?.minSalary) paramRequest.minSalary = filterCondition.minSalary
         if (filterCondition?.maxSalary) paramRequest.maxSalary = filterCondition.maxSalary

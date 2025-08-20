@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useEffect } from "react";
 import { GetListJobs } from "../../app/slices/jobs.slice";
+import JobPagination from "./components/JobPagination";
 
 const JobListPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -46,6 +47,10 @@ const JobListPage: React.FC = () => {
                     {error && <div className="alert alert-danger">{error.message}</div>}
                         
                     <JobList jobs={jobs} isLoading={isLoading}/>
+
+                    {meta && meta.totalItems > 1 && (
+                        <JobPagination currentPage={meta.currentPage} totalPages={meta.totalPages} />
+                    )}
                 </Col>
             </Row>
         </Container>
