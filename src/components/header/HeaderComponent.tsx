@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 import { logout } from "../../app/slices/auth.slice";
 import "./HeaderComponent.module.css"; // Still import for any global styles
-import logo from "../../logo.svg"
+import logo from "../../logo.png"
 
 const HeaderComponent: React.FC = () => {
   const dispatch = useDispatch();

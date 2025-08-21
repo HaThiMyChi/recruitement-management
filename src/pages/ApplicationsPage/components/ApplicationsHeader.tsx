@@ -25,7 +25,7 @@ const ApplicationsHeader: React.FC<ApplicationsHeaderProps> = ({
             <Card className="mb-4">
                 <Card.Header>Filter Applications</Card.Header>
                 <Card.Body>
-                    <Form onSubmit={onFilterSubmit}>
+                    <Form onSubmit={onFilterSubmit} data-testid="filter-form">
                         <Row>
                             <Col md={3}>
                                 <Form.Group className="mb-3">
@@ -36,6 +36,7 @@ const ApplicationsHeader: React.FC<ApplicationsHeaderProps> = ({
                                         placeholder="Enter Job ID"
                                         value={filters.jobId || ''}
                                         onChange={onFilterChange}
+                                        data-testid="job-id-filter"
                                     />
                                 </Form.Group>
                             </Col>
@@ -49,6 +50,7 @@ const ApplicationsHeader: React.FC<ApplicationsHeaderProps> = ({
                                         placeholder="Enter user ID"
                                         value={filters.userId || ''}
                                         onChange={onFilterChange}
+                                        data-testid="user-id-filter"
                                     />
                                 </Form.Group>
                             </Col>
@@ -60,6 +62,7 @@ const ApplicationsHeader: React.FC<ApplicationsHeaderProps> = ({
                                         name="status"
                                         value={filters.status || ''}
                                         onChange={onFilterChange}
+                                        data-testid="status-filter"
                                     >
                                         <option value="">All Statuses</option>
                                         {Object.values(ApplicationStatus).map(status => (
@@ -77,6 +80,7 @@ const ApplicationsHeader: React.FC<ApplicationsHeaderProps> = ({
                                     name="fromDate" 
                                     value={filters.fromDate || ''} 
                                     onChange={onFilterChange}
+                                    data-testid="from-date-filter"
                                 />
                                 </Form.Group>
                             </Col>
@@ -89,6 +93,7 @@ const ApplicationsHeader: React.FC<ApplicationsHeaderProps> = ({
                                     name="toDate" 
                                     value={filters.toDate || ''} 
                                     onChange={onFilterChange}
+                                    data-testid="to-date-filter"
                                 />
                                 </Form.Group>
                             </Col>

@@ -1,4 +1,3 @@
-import { wait } from "@testing-library/user-event/dist/utils";
 import { ApplicationPayload, ApplicationRequest } from "../types/application.type";
 import axiosCustom from "../../api/axiosCustom";
 import { ApplicationEnpoint } from "../../enums/ApplicationEnpoint";
