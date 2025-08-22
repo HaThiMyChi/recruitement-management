@@ -19,17 +19,19 @@ const BulkActions : React.FC<BulkActionsProps> = ({
     return (
         <Row className="mb-3">
             <Col>
-                <div className="bg-light p-3 rounded d-flex justify-content-between align-items-center">
+                <div data-testid="bulk-actions" className="bg-light p-3 rounded d-flex justify-content-between align-items-center">
                     <div>
                         <strong>{selectedCount}</strong> application{selectedCount !== 1 ? 's' : ''} selected
                     </div>
                     <ButtonGroup>
                         <Button
+                            data-testid="bulk-delete-button"
                             variant="danger"
                             size="sm"
                             onClick={onDeleteSelected}>Delete Selected
                         </Button>
                         <Button 
+                            data-testid="clear-selection-button"
                             variant="outline-secondary" 
                             size="sm" 
                             onClick={onClearSelection}

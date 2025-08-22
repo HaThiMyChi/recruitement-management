@@ -100,6 +100,7 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
                                         </Button>
 
                                         <Button
+                                            data-testid="change-status-button"
                                             variant="outline-secondary" 
                                             size="sm"
                                             onClick={() => onChangeStatus(application.id)}
@@ -107,7 +108,8 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
                                             Change Status
                                         </Button>
 
-                                        <Button 
+                                        <Button
+                                            data-testid="delete-application-button"
                                             variant="outline-danger" 
                                             size="sm"
                                             onClick={() => onDeleteApplication(application.id)}
