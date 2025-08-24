@@ -77,7 +77,7 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
                         </tr>
                     ) : (
                         applications.map(application => (
-                            <tr key={application.id}>
+                            <tr key={application.id} data-testid="application-row"> 
                                 <td>
                                     <Form.Check 
                                         type="checkbox"
