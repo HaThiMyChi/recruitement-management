@@ -53,6 +53,7 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
                     <tr>
                         <th style={{width: '40px'}}>
                             <Form.Check
+                                data-testid="application-checkbox"
                                 type="checkbox"
                                 onChange={handleSelectAll}
                                 checked={allSelected}
@@ -79,7 +80,8 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
                         applications.map(application => (
                             <tr key={application.id} data-testid="application-row"> 
                                 <td>
-                                    <Form.Check 
+                                    <Form.Check
+                                        data-testid=""
                                         type="checkbox"
                                         checked={selectedApplicationIds.includes(application.id)}
                                         onChange={(e) => handleCheckboxChange(e, application.id)}

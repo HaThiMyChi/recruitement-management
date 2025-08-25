@@ -76,12 +76,14 @@ const ApplicationsPagination: React.FC<ApplicationsPaginationProps> = ({meta, on
 
                 <Pagination>
                     <Pagination.Prev
+                        data-testid="previous-page-button"
                         disabled={meta.currentPage <= 1}
                         onClick={() => onPageChange(meta.currentPage - 1)}
                     />
 
                     {createPaginationItems()}
                     <Pagination.Next 
+                        data-testid="next-page-button"
                         disabled={meta.currentPage >= meta.totalPages}
                         onClick={() => onPageChange(meta.currentPage + 1)}/>
                 </Pagination>

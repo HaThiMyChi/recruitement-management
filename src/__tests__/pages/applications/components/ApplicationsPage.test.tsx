@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import ApplicationsPage from "../../../../pages/ApplicationsPage/ApplicationsPage";
 import * as applicationService from '../../../../services/applicationService';
 import { ApplicationStatus } from "../../../../enums/ApplicationStatus";
+import exp from "constants";
+import { BreadcrumbItem } from "react-bootstrap";
 
 // Mock the application service
 jest.mock('../../../../services/applicationService');
@@ -104,114 +106,292 @@ describe('ApplicationsPage', () => {
             expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
         });
     });
-});
 
-it('displays error message when fetch fails', async () => {
-    const errorMessage  = 'Failed to fetch applications';
-    mockedFetchApplications.mockRejectedValueOnce(new Error(errorMessage ));
+    it('displays error message when fetch fails', async () => {
+        const errorMessage  = 'Failed to fetch applications';
+        mockedFetchApplications.mockRejectedValueOnce(new Error(errorMessage ));
 
-    render(
+        render(
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
+
+        // chỉ check có element trong waitFor
+        const errorNode = await screen.findByTestId('error-message');
+
+        // các assert khác viết ngoài
+        expect(errorNode).toBeInTheDocument();
+        expect(errorNode).toHaveTextContent(errorMessage);
+    });
+
+    /* eslint-disable testing-library/no-multiple-assertions-wait-for */
+    it('displays applications data when fetch success', async () => {
+        render(
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
+
+        await waitFor(() => {
+            // Check for application data in the table
+            // expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+            // expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+            // expect(screen.getByText('UX Designer')).toBeInTheDocument();
+            const haveAll = ['Frontend Developer', 'Jane Smith', 'UX Designer']
+            .every(text => Boolean(screen.queryByText(text)));
+            expect(haveAll).toBe(true); // chỉ 1 assertion
+        })
+    });
+    /* eslint-enable testing-library/no-multiple-assertions-wait-for */
+
+    it('open application detail modal when clicking on an application', async () => {
+        render(
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
+
+        // Wait for applications to load
+        await waitFor(() => {
+            expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        });
+
+        // Find and click the first application row
+        const applicationRows = screen.getAllByTestId('application-row');
+        fireEvent.click(applicationRows[0]);
+
+        // Check if detail modal is displayed
+        expect(screen.getByTestId('application-detail-modal')).toBeInTheDocument();
+        expect(screen.getByText('Application #1 Details')).toBeInTheDocument();
+
+        // Close the modal
+        fireEvent.click(screen.getByTestId('close-detail-modal'));
+
+        // Check if modal is closed
+        await waitFor(() => {
+            expect(screen.queryByTestId('application-detail-modal')).not.toBeInTheDocument();
+        });
+    });
+
+    it('handles single application deletion', async () => {
+        mockedDeleteApplication.mockResolvedValueOnce(undefined);
+
+        render(
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
+
+        // Wait for applications to load
+        await waitFor(() => {
+            expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        });
+
+        // Find and click delete button for first application
+        const deleteButtons = screen.getAllByTestId('delete-application-button')
+        fireEvent.click(deleteButtons[0]);
+
+        // Check if confirmation modal is displayed
+        expect(screen.getByTestId('confirmation-modal')).toBeInTheDocument();
+        expect(screen.getByText('Delete Application')).toBeInTheDocument();
+
+        // Confirm deletion
+        fireEvent.click(screen.getByTestId('confirm-button'));
+
+        // Check if loading spinner is displayed
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+        // wait for success message
+        await waitFor(() => {
+        expect(screen.getByTestId('success-message')).toBeInTheDocument();
+        expect(screen.getByTestId('success-message').textContent).toContain('Application #1 was successfully deleted');
+        });
+
+        // Verify service was called
+        expect(mockedDeleteApplication).toHaveBeenCalledWith(1);
+        expect(mockedDeleteApplication).toHaveBeenCalledTimes(2); // Initial + after deletion
+
+    });
+
+    it('handles bulk application deletion', async () => {
+        mockedDeleteMultipleApplications.mockResolvedValueOnce({ deleted: 2, failed: [] });
+        
+        render(
         <BrowserRouter>
             <ApplicationsPage />
         </BrowserRouter>
-    );
-
-    // chỉ check có element trong waitFor
-    const errorNode = await screen.findByTestId('error-message');
-
-    // các assert khác viết ngoài
-    expect(errorNode).toBeInTheDocument();
-    expect(errorNode).toHaveTextContent(errorMessage);
-});
-
-/* eslint-disable testing-library/no-multiple-assertions-wait-for */
-it('displays applications data when fetch success', async () => {
-    render(
-        <BrowserRouter>
-            <ApplicationsPage />
-        </BrowserRouter>
-    );
-
-    await waitFor(() => {
-        // Check for application data in the table
-        // expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
-        // expect(screen.getByText('Jane Smith')).toBeInTheDocument();
-        // expect(screen.getByText('UX Designer')).toBeInTheDocument();
-        const haveAll = ['Frontend Developer', 'Jane Smith', 'UX Designer']
-        .every(text => Boolean(screen.queryByText(text)));
-        expect(haveAll).toBe(true); // chỉ 1 assertion
-    })
-});
-/* eslint-enable testing-library/no-multiple-assertions-wait-for */
-
-it('open application detail modal when clicking on an application', async () => {
-    render(
-        <BrowserRouter>
-            <ApplicationsPage />
-        </BrowserRouter>
-    );
-
-    // Wait for applications to load
-    await waitFor(() => {
+        );
+        
+        // Wait for applications to load
+        await waitFor(() => {
         expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        // const checkboxes = screen.getAllByTestId('application-checkbox');
+        // console.log('checkboxes', checkboxes)
+        // expect(checkboxes.length).toBeGreaterThanOrEqual(2);
+        });
+        
+        // Select first two applications
+        const checkboxes = screen.getAllByTestId('application-checkbox');
+        fireEvent.click(checkboxes[0]);
+        fireEvent.click(checkboxes[1]);
+        
+        // Click bulk delete button
+        fireEvent.click(screen.getByTestId('bulk-delete-button'));
+        
+        // Check if confirmation modal is displayed
+        expect(screen.getByTestId('confirmation-modal')).toBeInTheDocument();
+        expect(screen.getByText('Delete Multiple Applications')).toBeInTheDocument();
+        
+        // Confirm bulk deletion
+        fireEvent.click(screen.getByTestId('confirm-button'));
+        
+        // Wait for success message
+        await waitFor(() => {
+        expect(screen.getByTestId('success-message')).toBeInTheDocument();
+        expect(screen.getByTestId('success-message').textContent).toContain('Successfully deleted 2 application(s)');
+        });
+        
+        // Verify service was called
+        expect(mockedDeleteMultipleApplications).toHaveBeenCalledWith([1, 2]);
+        expect(mockedFetchApplications).toHaveBeenCalledTimes(2); // Initial + after deletion
     });
 
-    // Find and click the first application row
-    const applicationRows = screen.getAllByTestId('application-row');
-    fireEvent.click(applicationRows[0]);
+    it('handles application status change', async () => {
+        mockedUpdatedApplicationStatus.mockRejectedValueOnce(undefined);
 
-    // Check if detail modal is displayed
-    expect(screen.getByTestId('application-detail-modal')).toBeInTheDocument();
-    expect(screen.getByText('Application #1 Details')).toBeInTheDocument();
+        render (
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
 
-    // Close the modal
-    fireEvent.click(screen.getByTestId('close-detail-modal'));
+        // Wait for applications to load
+        await waitFor(() => {
+            expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        });
 
-    // Check if modal is closed
-    await waitFor(() => {
-        expect(screen.queryByTestId('application-detail-modal')).not.toBeInTheDocument();
+        // Find and click status changes button for first application
+        const statusChangeButtons = screen.getAllByTestId('change-status-button');
+        fireEvent.click(statusChangeButtons[0]);
+
+        // Check if status change modal is displayed
+        expect(screen.getByTestId('status-change-modal')).toBeInTheDocument();
+        expect(screen.getByText('Change status for application #1')).toBeInTheDocument();
+
+        // Submit status change
+        fireEvent.click(screen.getByTestId('submit-status-button'));
+
+        // Wait for success message
+        await waitFor(() => {
+            expect(screen.getByTestId('success-message')).toBeInTheDocument();
+            expect(screen.getByTestId('success-message').textContent).toContain('Application #1 status was successfully updated');
+        });
+
+        // Verify service was called
+        expect(mockedUpdatedApplicationStatus).toHaveBeenCalledWith(1, {
+            status: ApplicationStatus.SHORTLISTED,
+            recruiterNotes: 'Test note' 
+        });
+
+        expect(mockedFetchApplications).toHaveBeenCalledTimes(2);  // Initial + after status update
+    });
+
+    it('handles filter changes', async () => {
+        render(
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
+
+        // Wait for applications to load
+        await waitFor(() => {
+            expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        });
+
+        // Change a filter value
+        const statusFilter = screen.getByTestId('status-filter');
+        fireEvent.change(statusFilter, {target: {value: ApplicationStatus.SHORTLISTED}
+        });
+
+        // Submit the filter form
+        const filterForm  = screen.getByTestId('filter-form');
+        fireEvent.submit(filterForm);
+
+        // Verify thet fetchApplications was called with updated filters
+        expect(mockedFetchApplications).toHaveBeenCalledWith(expect.objectContaining({
+            status: ApplicationStatus.SHORTLISTED,
+            page: 1 // Should reset to page 1 when filters change
+        }))
+    });
+
+    it('handles pagination', async () => {
+        // Mock pagination data
+        const paginatedMock = {
+            ...mockApplications,
+            meta: {
+                ...mockApplications.meta,
+                totalPages: 3,
+                currentPage: 1
+            }
+        };
+
+        mockedFetchApplications.mockResolvedValue(paginatedMock);
+
+        render(
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        );
+
+        // Wait for applications to load
+        await waitFor(() => {
+            expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        });
+
+        // Click on next page
+        const nextPageButton = screen.getByTestId('next-page-button');
+        fireEvent.click(nextPageButton);
+
+        // Verify that fetchApplications was called with updated page
+        expect(mockedFetchApplications).toHaveBeenCalledWith(expect.objectContaining({
+            page: 2
+        }));
+    });
+
+    it('clears selection when button is clicked', async () => {
+        render (
+            <BrowserRouter>
+                <ApplicationsPage />
+            </BrowserRouter>
+        )
+
+        // Wait for applications to load
+        await waitFor(() => {
+            expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
+        });
+
+        // Select first application
+        const checkboxes = screen.getAllByTestId('application-checkbox');
+        fireEvent.click(checkboxes[0]);
+
+        // Check that bulk actions are visible
+        expect(screen.getByTestId('clear-selection-button')).toBeInTheDocument();
+
+        // Clear selection
+        fireEvent.click(screen.getByTestId('clear-selection-button'));
+
+        // Check that bulk actions are hidden
+        await waitFor(() => {
+            expect(screen.queryByTestId('clear-selection-button')).not.toBeInTheDocument();
+        });
     });
 });
 
-it('handles single application deletion', async () => {
-    mockedDeleteApplication.mockResolvedValueOnce(undefined);
 
-    render(
-        <BrowserRouter>
-            <ApplicationsPage />
-        </BrowserRouter>
-    );
 
-    // Wait for applications to load
-    await waitFor(() => {
-        expect(screen.getByText('Frontend Developer')).toBeInTheDocument();
-    });
 
-    // Find and click delete button for first application
-    const deleteButtons = screen.getAllByTestId('delete-application-button')
-    fireEvent.click(deleteButtons[0]);
 
-    // Check if confirmation modal is displayed
-    expect(screen.getByTestId('confirmation-modal')).toBeInTheDocument();
-    expect(screen.getByText('Delete Application')).toBeInTheDocument();
-
-    // Confirm deletion
-    fireEvent.click(screen.getByTestId('confirm-button'));
-
-    // Check if loading spinner is displayed
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
-
-    // wait for success message
-    await waitFor(() => {
-      expect(screen.getByTestId('success-message')).toBeInTheDocument();
-      expect(screen.getByTestId('success-message').textContent).toContain('Application #1 was successfully deleted');
-    });
-
-    // Verify service was called
-    expect(mockedDeleteApplication).toHaveBeenCalledWith(1);
-    expect(mockedDeleteApplication).toHaveBeenCalledTimes(2); // Initial + after deletion
-
-});
 
 
 
